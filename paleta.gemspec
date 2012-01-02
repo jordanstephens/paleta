@@ -4,8 +4,8 @@ require File.expand_path('../lib/paleta/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ['Jordan Stephens']
   gem.email         = ['iam@jordanstephens.net']
-  gem.description   = 'Working with color palettes.'
-  gem.summary       = 'Working with color palettes.'
+  gem.description   = 'color palette gem'
+  gem.summary       = 'color palette gem'
   gem.homepage      = 'http://jordanstephens.net'
 
   gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
