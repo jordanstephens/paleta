@@ -2,3 +2,6 @@
 .rspec
 Gemfile.lock
 Guardfile
+*.gem
+.bundle
+tmp
