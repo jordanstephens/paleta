@@ -26,14 +26,17 @@ module Paleta
     
     def lightness=(val)
       @lightness = range_validator(val, 0..100)
+      update_rgb
     end
     
     def saturation=(val)
       @saturation = range_validator(val, 0..100)
+      update_rgb
     end
     
     def hue=(val)
       @hue = range_validator(val, 0..360)
+      update_rgb
     end
     
     private
@@ -63,6 +66,48 @@ module Paleta
       @hue += 360 if @hue < 0
       @saturation *= 100
       @lightness *= 100
+    end
+    
+    def update_rgb
+      
+      h = @hue / 360.0
+      s = @saturation / 100.0
+      l = @lightness / 100.0
+      
+      if s == 0
+        r = l * 255
+        g = l * 255
+        b = l * 255
+      else
+        th = h / 6.0
+        if l < 0.5
+          t2 = l * (s + 1)
+        else
+          t2 = (l + s) - (l * s)
+        end
+        t1 = 2 * l - t2
+        
+        tr = th + (1.0 / 3.0)
+        tg = th
+        tb = th - (1.0 / 3.0)
+        
+        tr = hue_calc(tr, t1, t2)
+        tg = hue_calc(tg, t1, t2)
+        tb = hue_calc(tb, t1, t2)
+        
+        @red = tr * 255.0
+        @green = tg * 255.0
+        @blue = tb * 255.0
+      end
+    end
+    
+    def hue_calc(value, t1, t2)
+      value += 1 if value < 0
+      value -= 1 if value > 1
+      return (t1 + (t2 - t1) * 6 * value) if 6 * value < 1
+      return t2 if 2 * value < 1
+      return (t1 + (t2 - t1) * (2.0 / 3.0 - value) * 6) if 3 * value < 2
+      return t1;
     end
     
     def range_validator(val, range)

@@ -19,8 +19,9 @@ describe Paleta::Color do
     color.lightness.to_i.should == 52
   end
   
-  it "should update its HSL value when its RGB values are updated" do
+  it "should update its HSL value when its RGB value is updated" do
     color = Paleta::Color.new(237, 172, 33)
+    
     color.red = 0
     color.hue.to_i.should == 131
     color.saturation.to_i.should == 100
@@ -35,5 +36,24 @@ describe Paleta::Color do
     color.hue.to_i.should == 209
     color.saturation.to_i.should == 100
     color.lightness.to_i.should == 47
+  end
+  
+  it "should update its RGB value when its HSL value is updated" do
+    color = Paleta::Color.new(0, 0, 255)
+    
+    color.hue = 120
+    color.red.to_i.should == 255
+    color.green.to_i.should == 85
+    color.blue.to_i.should == 0
+    
+    color.saturation = 50
+    color.red.to_i.should == 191
+    color.green.to_i.should == 106
+    color.blue.to_i.should == 63
+
+    color.lightness = 80
+    color.red.to_i.should == 229
+    color.green.to_i.should == 195
+    color.blue.to_i.should == 178
   end
 end
