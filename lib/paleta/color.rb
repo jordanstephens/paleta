@@ -53,7 +53,7 @@ module Paleta
     end
     
     def similarity(color)
-      sqrt(((@red - color.red) * (@red - color.red)) + ((@green - color.green) * (@green - color.green)) + ((@blue - color.blue) * (@blue - color.blue))) / 441.6729559300637
+      sqrt(((@red - color.red) ** 2) + ((@green - color.green) ** 2) + ((@blue - color.blue) ** 2)) / sqrt(3 * (255 ** 2))
     end
     
     def invert!
