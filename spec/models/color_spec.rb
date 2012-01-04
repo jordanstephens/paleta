@@ -111,4 +111,20 @@ describe Paleta::Color do
     color2 = Paleta::Color.new(255, 255, 255)
     color1.similarity(color2).should == 1
   end
+  
+  it "should maintain its HEX value" do
+    color = Paleta::Color.new(94, 161, 235)
+    color.hex.should == "5ea1eb"
+  end
+  
+  it "should update its HSB and RGB components when its HEX value is updated" do
+    color = Paleta::Color.new
+    color.hex = "ffffff"
+    color.red.should == 255
+    color.green.should == 255
+    color.blue.should == 255
+    color.hue.should == 0
+    color.saturation.should == 0
+    color.lightness.should == 100
+  end
 end

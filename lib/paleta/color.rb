@@ -2,7 +2,7 @@ module Paleta
   class Color
     include Math
     
-    attr_reader :red, :green, :blue, :hue, :saturation, :lightness
+    attr_reader :red, :green, :blue, :hue, :saturation, :lightness, :hex
     
     def initialize(red = 0, green = 0, blue = 0)
       self.red = red
@@ -13,43 +13,65 @@ module Paleta
     def red=(val)
       @red = range_validator(val, 0..255)
       update_hsl
+      update_hex
     end
     
     def green=(val)
       @green = range_validator(val, 0..255)
       update_hsl
+      update_hex
     end
     
     def blue=(val)
       @blue = range_validator(val, 0..255)
       update_hsl
+      update_hex
     end
     
     def lightness=(val)
       @lightness = range_validator(val, 0..100)
       update_rgb
+      update_hex
     end
     
     def saturation=(val)
       @saturation = range_validator(val, 0..100)
       update_rgb
+      update_hex
     end
     
     def hue=(val)
       @hue = range_validator(val, 0..360)
       update_rgb
+      update_hex
+    end
+    
+    def hex=(val)
+      if val.length != 6 || 
+        (val[0..1] == 0 && val[0..1] != "00") || 
+        (val[2..3] == 0 && val[2..3] != "00") || 
+        (val[4..5] == 0 && val[4..5] != "00")
+        raise(ArgumentError, "Invalid Hex String")
+      end
+      @hex = val
+      @red = val[0..1].hex
+      @green = val[2..3].hex
+      @blue = val[4..5].hex
+      update_hsl
     end
     
     def lighten!(percent = 5)
       @lightness += percent
       @lightness = 100 if @lightness > 100
       update_rgb
+      update_hex
     end
     
     def darken!(percent = 5)
       @lightness -= percent
       @lightness = 0 if @lightness < 0
       update_rgb
+      update_hex
     end
     
     def invert!
@@ -57,6 +79,7 @@ module Paleta
       @green = 255 - @green
       @blue = 255 - @blue
       update_hsl
+      update_hex
     end
     
     def similarity(color)
@@ -116,6 +139,14 @@ module Paleta
         @green = g * 255.0
         @blue = b * 255.0
       end
+    end
+    
+    def update_hex
+      r = @red.to_s(16) rescue "00"
+      g = @green.to_s(16) rescue "00"
+      b = @blue.to_s(16) rescue "00"
+      [r, g, b].each { |c| c = "0#{c}" if c.length < 2 }      
+      @hex = "#{r}#{g}#{b}"
     end
     
     def hue_calc(value, t1, t2)
