@@ -52,15 +52,15 @@ module Paleta
       update_rgb
     end
     
-    def similarity(color)
-      sqrt(((@red - color.red) ** 2) + ((@green - color.green) ** 2) + ((@blue - color.blue) ** 2)) / sqrt(3 * (255 ** 2))
-    end
-    
     def invert!
       @red = 255 - @red
       @green = 255 - @green
       @blue = 255 - @blue
       update_hsl
+    end
+    
+    def similarity(color)
+      sqrt(((@red - color.red) ** 2) + ((@green - color.green) ** 2) + ((@blue - color.blue) ** 2)) / sqrt(3 * (255 ** 2))
     end
     
     private

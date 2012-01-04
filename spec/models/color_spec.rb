@@ -4,7 +4,6 @@ describe Paleta::Color do
   it "should initialize with components in 0..255" do
     color = Paleta::Color.new(94, 161, 235)
   	color2 = Paleta::Color.new(237, 172, 33)
-    raise color.similarity(color2).inspect
     color.red.should == 94
     color.green.should == 161
     color.blue.should == 235
