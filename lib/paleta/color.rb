@@ -43,11 +43,13 @@ module Paleta
     def lighten!(percent = 5)
       @lightness += percent
       @lightness = 100 if @lightness > 100
+      update_rgb
     end
     
     def darken!(percent = 5)
       @lightness -= percent
       @lightness = 0 if @lightness < 0
+      update_rgb
     end
     
     def similarity(color)
