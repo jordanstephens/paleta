@@ -89,6 +89,14 @@ describe Paleta::Color do
     color.lightness.should == 0
   end
   
+  it "should invert" do
+    color = Paleta::Color.new(94, 161, 235)
+    color.invert!
+    color.red.should == 161
+    color.green.should == 94
+    color.blue.should == 20
+  end
+  
   it "should calculate its similarity to another Color" do
     color1 = Paleta::Color.new(94, 161, 235)
     color2 = Paleta::Color.new(237, 172, 33)

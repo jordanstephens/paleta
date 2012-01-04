@@ -56,6 +56,13 @@ module Paleta
       sqrt(((@red - color.red) * (@red - color.red)) + ((@green - color.green) * (@green - color.green)) + ((@blue - color.blue) * (@blue - color.blue))) / 441.6729559300637
     end
     
+    def invert!
+      @red = 255 - @red
+      @green = 255 - @green
+      @blue = 255 - @blue
+      update_hsl
+    end
+    
     private
     
     def update_hsl
