@@ -50,22 +50,21 @@ module Paleta
       max = [r, g, b].max
       delta = max - min
       
-      @hue = 0
-      @saturation = 0
-      @lightness = (max + min) / 2.0
+      h = s = 0
+      l = (max + min) / 2.0
       
       if delta != 0
-        @saturation = (@lightness < 0.5) ? delta / (max + min) : delta / (2.0 - max - min)
+        s = (l < 0.5) ? delta / (max + min) : delta / (2.0 - max - min)
         case max
-        when r; @hue = (g - b) / delta
-        when g; @hue = 2 + (b - r) / delta
-        when b; @hue = 4 + (r - g) / delta
+        when r; h = (g - b) / delta
+        when g; h = 2 + (b - r) / delta
+        when b; h = 4 + (r - g) / delta
         end
       end
-      @hue *= 60
+      @hue = h * 60
       @hue += 360 if @hue < 0
-      @saturation *= 100
-      @lightness *= 100
+      @saturation = s * 100
+      @lightness = l * 100
     end
     
     def update_rgb
@@ -75,29 +74,23 @@ module Paleta
       l = @lightness / 100.0
       
       if s == 0
-        r = l * 255
-        g = l * 255
-        b = l * 255
+        r = g = b = l * 255
       else
-        th = h / 6.0
-        if l < 0.5
-          t2 = l * (s + 1)
-        else
-          t2 = (l + s) - (l * s)
-        end
+        h /= 6.0
+        t2 = l < 0.5 ? l * (s + 1) : (l + s) - (l * s)
         t1 = 2 * l - t2
         
-        tr = th + (1.0 / 3.0)
-        tg = th
-        tb = th - (1.0 / 3.0)
+        r = h + (1.0 / 3.0)
+        g = h
+        b = h - (1.0 / 3.0)
         
-        tr = hue_calc(tr, t1, t2)
-        tg = hue_calc(tg, t1, t2)
-        tb = hue_calc(tb, t1, t2)
+        r = hue_calc(r, t1, t2)
+        g = hue_calc(g, t1, t2)
+        b = hue_calc(b, t1, t2)
         
-        @red = tr * 255.0
-        @green = tg * 255.0
-        @blue = tb * 255.0
+        @red = r * 255.0
+        @green = g * 255.0
+        @blue = b * 255.0
       end
     end
     
