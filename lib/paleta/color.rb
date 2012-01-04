@@ -1,5 +1,6 @@
 module Paleta
   class Color
+    include Math
     
     attr_reader :red, :green, :blue, :hue, :saturation, :lightness
     
@@ -47,6 +48,10 @@ module Paleta
     def darken!(percent = 5)
       @lightness -= percent
       @lightness = 0 if @lightness < 0
+    end
+    
+    def similarity(color)
+      sqrt(((@red - color.red) * (@red - color.red)) + ((@green - color.green) * (@green - color.green)) + ((@blue - color.blue) * (@blue - color.blue))) / 441.6729559300637
     end
     
     private

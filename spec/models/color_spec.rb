@@ -89,4 +89,17 @@ describe Paleta::Color do
     color.lightness.should == 0
   end
   
+  it "should calculate its similarity to another Color" do
+    color1 = Paleta::Color.new(94, 161, 235)
+    color2 = Paleta::Color.new(237, 172, 33)
+    color1.similarity(color2).round(5).should == 0.56091
+    
+    color1 = Paleta::Color.new(237, 172, 33)
+    color2 = Paleta::Color.new(237, 172, 33)
+    color1.similarity(color2).should == 0
+        
+    color1 = Paleta::Color.new(0, 0, 0)
+    color2 = Paleta::Color.new(255, 255, 255)
+    color1.similarity(color2).should == 1
+  end
 end
