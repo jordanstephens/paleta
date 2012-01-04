@@ -56,4 +56,37 @@ describe Paleta::Color do
     color.green.to_i.should == 195
     color.blue.to_i.should == 178
   end
+  
+  it "should lighten by a percentage, " do
+    color = Paleta::Color.new(94, 161, 235)
+    lightness = color.lightness
+    color.lighten!
+    color.lightness.should == lightness + 5
+    lightness = color.lightness
+    color.lighten!(20)
+    color.lightness.should == lightness + 20
+  end
+  
+  it "should quietly maintain a maximum of 100 when lightening" do
+    color = Paleta::Color.new(94, 161, 235)
+    color.lighten!(300)
+    color.lightness.should == 100
+  end
+  
+  it "should darken by a percentage" do
+    color = Paleta::Color.new(94, 161, 235)
+    lightness = color.lightness
+    color.darken!
+    color.lightness.should == lightness - 5
+    lightness = color.lightness
+    color.darken!(20)
+    color.lightness.should == lightness - 20
+  end
+  
+  it "should quietly maintain a minimum of 0 when darkening" do
+    color = Paleta::Color.new(94, 161, 235)
+    color.darken!(300)
+    color.lightness.should == 0
+  end
+  
 end
