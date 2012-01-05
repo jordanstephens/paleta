@@ -36,7 +36,7 @@ and run
 	color.lightness # => 64.50980392156862
 	
 	# a HEX value is also maintained for each Color
-	color.hex # => "5ea1eb"
+	color.hex # => "5EA1EB"
 	
 	# lighten by a percentage
 	color.lighten!(10) 
