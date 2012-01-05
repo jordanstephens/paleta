@@ -113,7 +113,7 @@ describe Paleta::Color do
   
   it "should maintain its HEX value" do
     color = Paleta::Color.new(94, 161, 235)
-    color.hex.should == "5ea1eb"
+    color.hex.should == "5EA1EB"
   end
   
   it "should update its HSB and RGB components when its HEX value is updated" do

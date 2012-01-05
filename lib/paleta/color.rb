@@ -53,7 +53,7 @@ module Paleta
         (val[4..5] == 0 && val[4..5] != "00")
         raise(ArgumentError, "Invalid Hex String")
       end
-      @hex = val
+      @hex = val.upcase
       @red = val[0..1].hex
       @green = val[2..3].hex
       @blue = val[4..5].hex
@@ -146,7 +146,7 @@ module Paleta
       g = @green.to_s(16) rescue "00"
       b = @blue.to_s(16) rescue "00"
       [r, g, b].each { |c| c = "0#{c}" if c.length < 2 }      
-      @hex = "#{r}#{g}#{b}"
+      @hex = "#{r}#{g}#{b}".upcase
     end
     
     def hue_calc(value, t1, t2)
