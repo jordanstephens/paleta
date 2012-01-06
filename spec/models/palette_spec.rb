@@ -65,4 +65,47 @@ describe Paleta::Palette do
     palette[1].green.should == 94
     palette[1].blue.should == 20
   end
+  
+  it "should calculate a multiple regression over each Color in the Palette in RGB space" do
+    c1 = Paleta::Color.new(13, 57, 182)
+    c2 = Paleta::Color.new(94, 161, 235)
+    c3 = Paleta::Color.new(237, 172, 33)
+    palette = Paleta::Palette.new(c1, c2, c3)
+    r = palette.fit
+    r.slope[:r].should == 0.4632575855725132
+    r.slope[:g].should == -0.5730072013906133
+    r.slope[:b].should == 0.06837037037037037
+    r.offset[:r].should == 76.87979685435182
+    r.offset[:g].should == 224.49093618077973
+    r.offset[:b].should == 104.41111111111111
+  end
+  
+  it "should calculate its similarity to another Palette" do
+    c1 = Paleta::Color.new(0, 0, 0)
+    p1 = Paleta::Palette.new(c1)
+    
+    c2 = Paleta::Color.new(255, 255, 255)
+    p2 = Paleta::Palette.new(c2)
+    
+    p1.similarity(p2).should == 1
+    
+    c3 = Paleta::Color.new(0, 0, 0)
+    c4 = Paleta::Color.new(255, 255, 255)
+    p3 = Paleta::Palette.new(c3, c4)
+    
+    c5 = Paleta::Color.new(0, 0, 0)
+    c6 = Paleta::Color.new(255, 255, 255)
+    p4 = Paleta::Palette.new(c5, c6)
+    p3.similarity(p4).should == 0
+    
+    
+    c7 = Paleta::Color.new(13, 57, 182)
+    c8 = Paleta::Color.new(237, 172, 33)
+    p5 = Paleta::Palette.new(c7, c8)
+    
+    c9 = Paleta::Color.new(13, 57, 182)
+    c10 = Paleta::Color.new(94, 161, 235)
+    p6 = Paleta::Palette.new(c9, c10)
+    p5.similarity(p6).round(5).should == 0.0047
+  end
 end
