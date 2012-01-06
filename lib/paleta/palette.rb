@@ -46,28 +46,24 @@ module Paleta
     end
     
     def similarity(palette)
-            
-      r1 = self.fit
-      r2 = palette.fit
+      r, a, b = [], [], []
+      (0..1).each { |i| a[i], b[i] = {}, {} }
       
-      a1, a2, b1, b2 = {}, {}, {}, {}
-      a1[:r] = 0 * r1.slope[:r] + r1.offset[:r]
-      a1[:g] = 0 * r1.slope[:g] + r1.offset[:g]
-      a1[:b] = 0 * r1.slope[:b] + r1.offset[:b]
-      b1[:r] = 255 * r1.slope[:r] + r1.offset[:r]
-      b1[:g] = 255 * r1.slope[:g] + r1.offset[:g]
-      b1[:b] = 255 * r1.slope[:b] + r1.offset[:b]
-      a2[:r] = 0 * r2.slope[:r] + r2.offset[:r]
-      a2[:g] = 0 * r2.slope[:g] + r2.offset[:g]
-      a2[:b] = 0 * r2.slope[:b] + r2.offset[:b]
-      b2[:r] = 255 * r2.slope[:r] + r2.offset[:r]
-      b2[:g] = 255 * r2.slope[:g] + r2.offset[:g]
-      b2[:b] = 255 * r2.slope[:b] + r2.offset[:b]
-
+      # r[i] is the Math::MultipleRegression of the Palette in RGB space
+      r[0] = self.fit
+      r[1] = palette.fit
+      
+      [0, 1].each do |i|
+        [:r, :g, :b].each do |k|
+          a[i][k] = 0 * r[i].slope[k] + r[i].offset[k]
+          b[i][k] = 255 * r[i].slope[k] + r[i].offset[k]
+        end
+      end
+      
       d_max = sqrt(3 * (65025 ** 2))
      
-      d1 = distance(a1, a2) / d_max
-      d2 = distance(b1, b2) / d_max
+      d1 = distance(a[0], a[1]) / d_max
+      d2 = distance(b[0], b[1]) / d_max
       
       d1 + d2
     end

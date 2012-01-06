@@ -98,7 +98,6 @@ describe Paleta::Palette do
     p4 = Paleta::Palette.new(c5, c6)
     p3.similarity(p4).should == 0
     
-    
     c7 = Paleta::Color.new(13, 57, 182)
     c8 = Paleta::Color.new(237, 172, 33)
     p5 = Paleta::Palette.new(c7, c8)
