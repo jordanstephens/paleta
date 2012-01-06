@@ -62,7 +62,14 @@ and run
 
 	# retreive a Color from a Palette
 	palette[1] # => color2
+	
+	# lighten and darken an entire Palette by a percentage
+	palette.lighten!(15)
+	palette.darken!(20)
 
+	# invert each color in a Palette
+	palette.invert!
+	
 See the [documentation](http://rubydoc.info/gems/paleta/ "Documentation").
 
  
