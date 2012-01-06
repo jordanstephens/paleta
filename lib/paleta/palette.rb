@@ -21,5 +21,23 @@ module Paleta
     def include?(color)
       @colors.include?(color)
     end
+    
+    def lighten!(percent = 5)
+      @colors.each do |color|
+        color.lighten!(percent)
+      end
+    end
+    
+    def darken!(percent = 5)
+      @colors.each do |color|
+        color.darken!(percent)
+      end
+    end
+    
+    def invert!
+      @colors.each do |color|
+        color.invert!
+      end
+    end
   end
 end
