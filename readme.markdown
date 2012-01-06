@@ -70,6 +70,17 @@ and run
 	# invert each color in a Palette
 	palette.invert!
 	
+	# calculate similarity of two Palettes
+    color1 = Paleta::Color.new(13, 57, 182)
+    color2 = Paleta::Color.new(237, 172, 33)
+    palette1 = Paleta::Palette.new(color1, color2)
+    
+    color3 = Paleta::Color.new(13, 57, 182)
+    color4 = Paleta::Color.new(94, 161, 235)
+    palette2 = Paleta::Palette.new(color3, color4)
+	
+    palette1.similarity(palette2) # => 0.0046992695975874915
+	
 See the [documentation](http://rubydoc.info/gems/paleta/ "Documentation").
 
  
