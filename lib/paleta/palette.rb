@@ -46,6 +46,7 @@ module Paleta
     end
     
     def similarity(palette)
+            
       r1 = self.fit
       r2 = palette.fit
       
@@ -63,8 +64,10 @@ module Paleta
       b2[:g] = 255 * r2.slope[:g] + r2.offset[:g]
       b2[:b] = 255 * r2.slope[:b] + r2.offset[:b]
 
-      d1 = sqrt(((a1[:r] - a2[:r]) ** 2) + ((a1[:g] - a2[:g]) ** 2) + ((a1[:b] - a2[:b]) ** 2)) / sqrt(3 * (65025 ** 2))
-      d2 = sqrt(((b1[:r] - b2[:r]) ** 2) + ((b1[:g] - b2[:g]) ** 2) + ((b1[:b] - b2[:b]) ** 2)) / sqrt(3 * (65025 ** 2))
+      d_max = sqrt(3 * (65025 ** 2))
+     
+      d1 = distance(a1, a2) / d_max
+      d2 = distance(b1, b2) / d_max
       
       d1 + d2
     end
