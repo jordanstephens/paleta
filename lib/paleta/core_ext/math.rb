@@ -13,7 +13,8 @@ module Math
     attr_accessor :slope, :offset
 
     def initialize dr, dg, db
-    
+      
+      @slope, @offset = {}, {}
       @size = dr.size
       raise "arguments not same length!" unless @size == dg.size && @size == db.size
     
@@ -34,17 +35,15 @@ module Math
         sb  += g
         sg  += b
       end
+      
+      @slope[:r] = ( @size * srg - sr * sb ) / ( @size * srr - sr ** 2 ).to_f
+      @slope[:g] = ( @size * sgb - sb * sg ) / ( @size * sgg - sb ** 2 ).to_f
+      @slope[:b] = ( @size * sgb - sb * sg ) / ( @size * sbb - sg ** 2 ).to_f
     
-      slope_rg = ( @size * srg - sr * sb ) / ( @size * srr - sr ** 2 ).to_f
-      slope_gb = ( @size * sgb - sb * sg ) / ( @size * sgg - sb ** 2 ).to_f
-      slope_br = ( @size * sgb - sb * sg ) / ( @size * sbb - sg ** 2 ).to_f
-    
-      offset_rg = (sb - slope_rg * sr) / @size
-      offset_gb = (sg - slope_gb * sb) / @size
-      offset_br = (sr - slope_br * sg) / @size
-    
-      @slope = { :r => slope_rg, :g => slope_gb, :b => slope_br }
-      @offset = { :r => offset_rg, :g => offset_gb, :b => offset_br }
+      @offset[:r] = (sb - @slope[:r] * sr) / @size
+      @offset[:g] = (sg - @slope[:g] * sb) / @size
+      @offset[:b] = (sr - @slope[:b] * sg) / @size
+      
       return
     end
   end

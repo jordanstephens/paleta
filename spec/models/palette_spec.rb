@@ -14,7 +14,7 @@ describe Paleta::Palette do
     expect{ Paleta::Palette.new(c1, c2) }.to raise_error
   end
   
-  it "should add colors" do
+  it "should add Colors" do
     c1 = Paleta::Color.new(13, 57, 182)
     c2 = Paleta::Color.new(94, 161, 235)
     palette = Paleta::Palette.new(c1)
@@ -22,7 +22,7 @@ describe Paleta::Palette do
     palette.include?(c2).should be_true
   end
   
-  it "should add colors with push" do
+  it "should add Colors with push" do
     c1 = Paleta::Color.new(13, 57, 182)
     c2 = Paleta::Color.new(94, 161, 235)
     palette = Paleta::Palette.new(c1)
@@ -30,7 +30,7 @@ describe Paleta::Palette do
     palette[1].should == c2
   end
   
-  it "should remove the last color with pop" do
+  it "should remove the last Color with pop" do
     c1 = Paleta::Color.new(13, 57, 182)
     c2 = Paleta::Color.new(94, 161, 235)
     palette = Paleta::Palette.new(c1, c2)
@@ -39,7 +39,7 @@ describe Paleta::Palette do
     palette.include?(c2).should be_false
   end
   
-  it "should remove colors by index" do
+  it "should remove Colors by index" do
     c1 = Paleta::Color.new(13, 57, 182)
     c2 = Paleta::Color.new(94, 161, 235)
     palette = Paleta::Palette.new(c1, c2)
@@ -47,14 +47,14 @@ describe Paleta::Palette do
     palette.include?(c1).should be_false
   end
   
-  it "should allow array-style accessing of colors" do
+  it "should allow array-style accessing of Colors" do
     c1 = Paleta::Color.new(13, 57, 182)
     palette = Paleta::Palette.new(c1)
     palette[0].should == c1
     palette[1].should be_nil
   end
   
-  it "should lighten each color in a palette by a percentage" do
+  it "should lighten each Color in a Palette by a percentage" do
     c1 = Paleta::Color.new(13, 57, 182)
     c2 = Paleta::Color.new(94, 161, 235)
     palette = Paleta::Palette.new(c1, c2)
@@ -66,7 +66,7 @@ describe Paleta::Palette do
     palette[1].lightness.should == lightness2 + percent
   end
   
-  it "should darken each color in a palette by a percentage" do
+  it "should darken each Color in a Palette by a percentage" do
     c1 = Paleta::Color.new(13, 57, 182)
     c2 = Paleta::Color.new(94, 161, 235)
     palette = Paleta::Palette.new(c1, c2)
@@ -78,7 +78,7 @@ describe Paleta::Palette do
     palette[1].lightness.should == lightness2 - percent
   end
   
-  it "should invert each color in a palette" do
+  it "should invert each Color in a Palette" do
     c1 = Paleta::Color.new(13, 57, 182)
     c2 = Paleta::Color.new(94, 161, 235)
     palette = Paleta::Palette.new(c1, c2)
