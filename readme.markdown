@@ -22,7 +22,16 @@ and run
 
 ### Color
 
-    # create a color with RGB components
+	# create a color with HSL components
+	color = Paleta::Color.new(:hsl, 280, 37, 68)
+	
+	# create a color with RGB components
+	color = Paleta::Color.new(:rgb, 94, 161, 235)
+	
+	# create a color with a HEX value
+	color = Paleta::Color.new(:hex, "5EA1EB")
+	
+    # creating a color with no flag defaults to RGB components
 	color = Paleta::Color.new(94, 161, 235)
 	
 	# access component values
