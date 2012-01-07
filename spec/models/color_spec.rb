@@ -1,8 +1,29 @@
 require 'spec_helper'
 
 describe Paleta::Color do
-  it "should initialize with components in 0..255" do
+  it "should initialize with RGB components in 0..255" do
     color = Paleta::Color.new(94, 161, 235)
+    color.red.should == 94
+    color.green.should == 161
+    color.blue.should == 235
+  end
+  
+  it "should initialize with the :hex flag and a valid 6 character HEX string" do
+    color = Paleta::Color.new(:hex, "5EA1EB")
+    color.red.should == 94
+    color.green.should == 161
+    color.blue.should == 235
+  end
+  
+  it "should initialize with the :hsl flag, hue in 0..360, and saturation and lightness in 0..100" do
+    color = Paleta::Color.new(:hsl, 280, 37, 68)
+    color.hue.should == 280
+    color.saturation.should == 37
+    color.lightness.should == 68
+  end
+  
+  it "should initialize with the :rgb flag with RGB components in 0..255" do
+    color = Paleta::Color.new(:rgb, 94, 161, 235)
     color.red.should == 94
     color.green.should == 161
     color.blue.should == 235

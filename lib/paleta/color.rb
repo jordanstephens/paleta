@@ -6,10 +6,41 @@ module Paleta
     
     attr_reader :red, :green, :blue, :hue, :saturation, :lightness, :hex
     
-    def initialize(red = 0, green = 0, blue = 0)
+    def initialize(*args)
+      
+      # example: new(:hex, "336699")
+      if args.length == 2 && args[0] == :hex && args[1].is_a?(String)
+        hex_init(args[1])
+      # example: new(235, 129, 74)
+      elsif args.length == 3 && args[0].is_a?(Numeric) && args[1].is_a?(Numeric) && args[2].is_a?(Numeric)
+        rgb_init(args[0], args[1], args[2])
+      elsif args.length == 4 && [:rgb, :hsl].include?(args[0]) && args[1].is_a?(Numeric) && args[2].is_a?(Numeric) && args[3].is_a?(Numeric)
+        # example: new(:hsl, 320, 96, 74)
+        rgb_init(args[1], args[2], args[3]) if args[0] == :rgb
+        # example: new(:rgb, 235, 129, 74)
+        hsl_init(args[1], args[2], args[3]) if args[0] == :hsl
+      elsif args.length == 0
+        # example: new()
+        rgb_init(0, 0, 0)
+      else
+        raise(ArgumentError, "Invalid arguments")
+      end
+    end
+    
+    def rgb_init(red = 0, green = 0, blue = 0)
       self.red = red
       self.green = green
       self.blue = blue
+    end
+    
+    def hsl_init(hue = 0, saturation = 0, lightness = 0)
+      self.hue = hue
+      self.saturation = saturation
+      self.lightness = lightness
+    end
+    
+    def hex_init(val = "000000")
+      self.hex = val
     end
     
     def red=(val)
@@ -49,10 +80,7 @@ module Paleta
     end
     
     def hex=(val)
-      if val.length != 6 || 
-        (val[0..1] == 0 && val[0..1] != "00") || 
-        (val[2..3] == 0 && val[2..3] != "00") || 
-        (val[4..5] == 0 && val[4..5] != "00")
+      unless val.length == 6 && /^[[:xdigit:]]+$/ === val
         raise(ArgumentError, "Invalid Hex String")
       end
       @hex = val.upcase
@@ -91,9 +119,9 @@ module Paleta
     private
     
     def update_hsl
-      r = @red / 255.0 rescue 0
-      g = @green / 255.0 rescue 0
-      b = @blue / 255.0 rescue 0
+      r = @red / 255.0 rescue 0.0
+      g = @green / 255.0 rescue 0.0
+      b = @blue / 255.0 rescue 0.0
       
       min = [r, g, b].min
       max = [r, g, b].max
@@ -118,9 +146,9 @@ module Paleta
     
     def update_rgb
       
-      h = @hue / 360.0
-      s = @saturation / 100.0
-      l = @lightness / 100.0
+      h = @hue / 360.0 rescue 0
+      s = @saturation / 100.0 rescue 0
+      l = @lightness / 100.0 rescue 0
       
       if s == 0
         r = g = b = l * 255
