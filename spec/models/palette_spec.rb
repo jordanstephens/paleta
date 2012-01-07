@@ -14,12 +14,37 @@ describe Paleta::Palette do
     expect{ Paleta::Palette.new(c1, c2) }.to raise_error
   end
   
-  it "should add colors to an initialized palette" do
+  it "should add colors" do
     c1 = Paleta::Color.new(13, 57, 182)
     c2 = Paleta::Color.new(94, 161, 235)
     palette = Paleta::Palette.new(c1)
     palette << c2
     palette.include?(c2).should be_true
+  end
+  
+  it "should add colors with push" do
+    c1 = Paleta::Color.new(13, 57, 182)
+    c2 = Paleta::Color.new(94, 161, 235)
+    palette = Paleta::Palette.new(c1)
+    palette.push(c2)
+    palette[1].should == c2
+  end
+  
+  it "should remove the last color with pop" do
+    c1 = Paleta::Color.new(13, 57, 182)
+    c2 = Paleta::Color.new(94, 161, 235)
+    palette = Paleta::Palette.new(c1, c2)
+    c = palette.pop()
+    c.should == c2
+    palette.include?(c2).should be_false
+  end
+  
+  it "should remove colors by index" do
+    c1 = Paleta::Color.new(13, 57, 182)
+    c2 = Paleta::Color.new(94, 161, 235)
+    palette = Paleta::Palette.new(c1, c2)
+    palette.delete_at(0)
+    palette.include?(c1).should be_false
   end
   
   it "should allow array-style accessing of colors" do

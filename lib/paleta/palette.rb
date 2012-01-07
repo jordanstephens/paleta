@@ -15,6 +15,18 @@ module Paleta
       color.is_a?(Color) ? @colors << color : raise(ArgumentError, "Passed argument is not a Color")
     end
     
+    def push(color)
+      self << color
+    end
+    
+    def pop
+      @colors.pop
+    end
+    
+    def delete_at(i)
+      @colors.delete_at(i)
+    end
+    
     def [](i)
       @colors[i]
     end
