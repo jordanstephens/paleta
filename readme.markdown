@@ -58,10 +58,14 @@ and run
 	# add Colors to a Palette
     color1 = Paleta::Color.new(13, 57, 182)
     color2 = Paleta::Color.new(94, 161, 235)
-    palette = Paleta::Palette.new(c1, c2)
+	color3 = Paleta::Color.new(237, 182, 17)
+    palette = Paleta::Palette.new(color1, color2, color3)
 
 	# retreive a Color from a Palette
 	palette[1] # => color2
+	
+	# remove a Color from a Palette by index
+	palette.delete_at(2)
 	
 	# lighten and darken an entire Palette by a percentage
 	palette.lighten!(15)
@@ -71,13 +75,13 @@ and run
 	palette.invert!
 	
 	# calculate similarity of two Palettes
-    color1 = Paleta::Color.new(13, 57, 182)
-    color2 = Paleta::Color.new(237, 172, 33)
-    palette1 = Paleta::Palette.new(color1, color2)
+    color4 = Paleta::Color.new(13, 57, 182)
+    color5 = Paleta::Color.new(237, 172, 33)
+    palette1 = Paleta::Palette.new(color4, color5)
     
-    color3 = Paleta::Color.new(13, 57, 182)
-    color4 = Paleta::Color.new(94, 161, 235)
-    palette2 = Paleta::Palette.new(color3, color4)
+    color6 = Paleta::Color.new(13, 57, 182)
+    color7 = Paleta::Color.new(94, 161, 235)
+    palette2 = Paleta::Palette.new(color6, color7)
 	
     palette1.similarity(palette2) # => 0.0046992695975874915
 	

@@ -23,7 +23,7 @@ module Paleta
       @colors.pop
     end
     
-    def delete_at(i)
+    def delete_at(i = 0)
       @colors.delete_at(i)
     end
     
