@@ -1,3 +1,5 @@
+require 'paleta/core_ext/math'
+
 module Paleta
   class Color
     include Math
