@@ -92,7 +92,6 @@ and run
     color7 = Paleta::Color.new(94, 161, 235)
     palette2 = Paleta::Palette.new(color6, color7)
 
-	# calculate similarity between Palettes
 	# Palette#similarity calculates the similarity between two Palettes and returns a
 	# value in 0..1, with 0 being identical and 1 being as dissimilar as possible	
     palette1.similarity(palette2) # => 0.0046992695975874915
