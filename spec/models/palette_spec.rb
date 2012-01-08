@@ -11,7 +11,7 @@ describe Paleta::Palette do
   it "should not initialize if an object in the set is not a Color" do
     c1 = Paleta::Color.new(13, 57, 182)
     c2 = 13
-    expect{ Paleta::Palette.new(c1, c2) }.to raise_error
+    expect{ Paleta::Palette.new(c1, c2) }.to raise_error(ArgumentError)
   end
   
   it "should add Colors" do

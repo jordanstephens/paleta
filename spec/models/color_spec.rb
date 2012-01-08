@@ -15,6 +15,30 @@ describe Paleta::Color do
     color.blue.should == 235
   end
   
+  it "should raise an error on an invalid format flag" do
+    expect{ Paleta::Color.new(:something, 50, 50, 50) }.to raise_error(ArgumentError)
+  end
+  
+  it "should raise an error on an invalid hex string" do
+    expect{ Paleta::Color.new(:hex, "xkfjs") }.to raise_error(ArgumentError)
+  end
+  
+  it "should raise an error on RGB components not in 0..255" do
+    expect{ Paleta::Color.new(-74, 333, 4321) }.to raise_error(ArgumentError)
+  end
+
+  it "should raise an error on hue not in 0..360" do
+    expect{ Paleta::Color.new(:hsl, 400, 50, 50) }.to raise_error(ArgumentError)
+  end
+  
+  it "should raise an error on saturation not in 0..100" do
+    expect{ Paleta::Color.new(:hsl, 200, 150, 50) }.to raise_error(ArgumentError)
+  end
+  
+  it "should raise an error on lightness not in 0..100" do
+    expect{ Paleta::Color.new(:hsl, 200, 50, 150) }.to raise_error(ArgumentError)
+  end
+  
   it "should initialize with the :hsl flag, hue in 0..360, and saturation and lightness in 0..100" do
     color = Paleta::Color.new(:hsl, 280, 37, 68)
     color.hue.should == 280
@@ -27,10 +51,6 @@ describe Paleta::Color do
     color.red.should == 94
     color.green.should == 161
     color.blue.should == 235
-  end
-  
-  it "should not initialize with components not in 0..255" do
-    expect{ Paleta::Color.new(-74, 333, 4321) }.to raise_error
   end
   
   it "should calculate its HSL value on itialization" do

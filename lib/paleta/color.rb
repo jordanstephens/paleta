@@ -80,9 +80,7 @@ module Paleta
     end
     
     def hex=(val)
-      unless val.length == 6 && /^[[:xdigit:]]+$/ === val
-        raise(ArgumentError, "Invalid Hex String")
-      end
+      raise(ArgumentError, "Invalid Hex String") unless val.length == 6 && /^[[:xdigit:]]+$/ === val
       @hex = val.upcase
       @red = val[0..1].hex
       @green = val[2..3].hex
