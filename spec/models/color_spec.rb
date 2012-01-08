@@ -15,6 +15,24 @@ describe Paleta::Color do
     color.blue.should == 235
   end
   
+  it "should initialize with the :hsl flag, hue in 0..360, and saturation and lightness in 0..100" do
+    color = Paleta::Color.new(:hsl, 0, 0, 100)
+    color.hue.should == 0
+    color.saturation.should == 0
+    color.lightness.should == 100
+    color.red.should == 255
+    color.green.should == 255
+    color.blue.should == 255
+    color.hex.should == "FFFFFF"
+  end
+  
+  it "should initialize with the :rgb flag with RGB components in 0..255" do
+    color = Paleta::Color.new(:rgb, 94, 161, 235)
+    color.red.should == 94
+    color.green.should == 161
+    color.blue.should == 235
+  end
+  
   it "should raise an error on an invalid format flag" do
     expect{ Paleta::Color.new(:something, 50, 50, 50) }.to raise_error(ArgumentError)
   end
@@ -26,7 +44,7 @@ describe Paleta::Color do
   it "should raise an error on RGB components not in 0..255" do
     expect{ Paleta::Color.new(-74, 333, 4321) }.to raise_error(ArgumentError)
   end
-
+  
   it "should raise an error on hue not in 0..360" do
     expect{ Paleta::Color.new(:hsl, 400, 50, 50) }.to raise_error(ArgumentError)
   end
@@ -37,20 +55,6 @@ describe Paleta::Color do
   
   it "should raise an error on lightness not in 0..100" do
     expect{ Paleta::Color.new(:hsl, 200, 50, 150) }.to raise_error(ArgumentError)
-  end
-  
-  it "should initialize with the :hsl flag, hue in 0..360, and saturation and lightness in 0..100" do
-    color = Paleta::Color.new(:hsl, 280, 37, 68)
-    color.hue.should == 280
-    color.saturation.should == 37
-    color.lightness.should == 68
-  end
-  
-  it "should initialize with the :rgb flag with RGB components in 0..255" do
-    color = Paleta::Color.new(:rgb, 94, 161, 235)
-    color.red.should == 94
-    color.green.should == 161
-    color.blue.should == 235
   end
   
   it "should calculate its HSL value on itialization" do
@@ -72,7 +76,7 @@ describe Paleta::Color do
     color.hue.to_i.should == 136
     color.saturation.to_i.should == 100
     color.lightness.to_i.should == 24
-
+  
     color.blue = 241
     color.hue.to_i.should == 209
     color.saturation.to_i.should == 100
@@ -91,7 +95,7 @@ describe Paleta::Color do
     color.red.to_i.should == 191
     color.green.to_i.should == 106
     color.blue.to_i.should == 63
-
+  
     color.lightness = 80
     color.red.to_i.should == 229
     color.green.to_i.should == 195

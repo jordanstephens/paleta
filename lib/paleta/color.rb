@@ -149,7 +149,7 @@ module Paleta
       l = @lightness / 100.0 rescue 0
       
       if s == 0
-        r = g = b = l * 255
+        @red = @green = @blue = l * 255
       else
         h /= 6.0
         t2 = l < 0.5 ? l * (s + 1) : (l + s) - (l * s)
@@ -170,10 +170,12 @@ module Paleta
     end
     
     def update_hex
-      r = @red.to_s(16) rescue "00"
-      g = @green.to_s(16) rescue "00"
-      b = @blue.to_s(16) rescue "00"
-      [r, g, b].each { |c| c = "0#{c}" if c.length < 2 }      
+      r = @red.to_i.to_s(16) rescue "00"
+      g = @green.to_i.to_s(16) rescue "00"
+      b = @blue.to_i.to_s(16) rescue "00"
+      r = "0#{r}" if r.length < 2
+      g = "0#{g}" if g.length < 2
+      b = "0#{b}" if b.length < 2
       @hex = "#{r}#{g}#{b}".upcase
     end
     
