@@ -56,6 +56,9 @@ and run
 	# desaturate a Color
 	color.desaturate!
 	
+	# convert a Color into its complement
+	color.complement!
+	
 	# invert a Color
 	color.invert!
 	
