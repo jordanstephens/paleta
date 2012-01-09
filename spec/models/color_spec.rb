@@ -148,6 +148,12 @@ describe Paleta::Color do
     color.saturation.should == 0
   end
   
+  it "should become its complement" do
+    color = Paleta::Color.new(:hsl, 90, 50, 50)
+    color.complement!
+    color.hue.should == 270
+  end
+  
   it "should calculate its similarity to another Color" do
     color1 = Paleta::Color.new(94, 161, 235)
     color2 = Paleta::Color.new(237, 172, 33)

@@ -116,6 +116,12 @@ module Paleta
       update_hex
     end
     
+    def complement!
+      @hue = (@hue + 180) % 360
+      update_rgb
+      update_hex
+    end
+    
     def similarity(color)
       distance({ :r => @red, :g => @green, :b => @blue}, { :r => color.red, :g => color.green, :b => color.blue}) / sqrt(3 * (255 ** 2))
     end
