@@ -142,6 +142,12 @@ describe Paleta::Color do
     color.blue.should == 20
   end
   
+  it "should desaturate" do
+    color = Paleta::Color.new(94, 161, 235)
+    color.desaturate!
+    color.saturation.should == 0
+  end
+  
   it "should calculate its similarity to another Color" do
     color1 = Paleta::Color.new(94, 161, 235)
     color2 = Paleta::Color.new(237, 172, 33)
