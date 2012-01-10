@@ -8,11 +8,21 @@ module Paleta
     
     def initialize(*args)
       
-      # example: new(:hex, "336699")
-      if args.length == 2 && args[0] == :hex && args[1].is_a?(String)
+      if args.length == 1 && args[0].is_a?(Color)
+        # TODO: refactor this, find out how to call a method name by the value of a variable
+        # something like args[0].instance_variables.each { |k, v| self.(k) = v }
+        @red = args[0].red
+        @green = args[0].green
+        @blue = args[0].blue
+        @hue = args[0].hue
+        @saturation = args[0].saturation
+        @lightness = args[0].lightness
+        @hex = args[0].hex
+      elsif args.length == 2 && args[0] == :hex && args[1].is_a?(String)
+        # example: new(:hex, "336699")
         hex_init(args[1])
-      # example: new(235, 129, 74)
       elsif args.length == 3 && args[0].is_a?(Numeric) && args[1].is_a?(Numeric) && args[2].is_a?(Numeric)
+        # example: new(235, 129, 74)
         rgb_init(args[0], args[1], args[2])
       elsif args.length == 4 && [:rgb, :hsl].include?(args[0]) && args[1].is_a?(Numeric) && args[2].is_a?(Numeric) && args[3].is_a?(Numeric)
         # example: new(:hsl, 320, 96, 74)
@@ -88,6 +98,12 @@ module Paleta
       update_hsl
     end
     
+    def lighten(percent = 5)
+      copy = self.class.new(self)
+      copy.lighten!(percent)
+      return copy
+    end
+    
     def lighten!(percent = 5)
       @lightness += percent
       @lightness = 100 if @lightness > 100
@@ -95,11 +111,23 @@ module Paleta
       update_hex
     end
     
+    def darken(percent = 5)
+      copy = self.class.new(self)
+      copy.darken!(percent)
+      return copy
+    end
+    
     def darken!(percent = 5)
       @lightness -= percent
       @lightness = 0 if @lightness < 0
       update_rgb
       update_hex
+    end
+    
+    def invert
+      copy = self.class.new(self)
+      copy.invert!
+      return copy
     end
     
     def invert!
@@ -110,10 +138,22 @@ module Paleta
       update_hex
     end
     
+    def desaturate
+      copy = self.class.new(self)
+      copy.desaturate!
+      return copy
+    end
+    
     def desaturate!
       @saturation = 0
       update_rgb
       update_hex
+    end
+    
+    def complement
+      copy = self.class.new(self)
+      copy.complement!
+      return copy
     end
     
     def complement!

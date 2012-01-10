@@ -102,7 +102,7 @@ describe Paleta::Color do
     color.blue.to_i.should == 178
   end
   
-  it "should lighten by a percentage, " do
+  it "should lighten itself by a percentage" do
     color = Paleta::Color.new(94, 161, 235)
     lightness = color.lightness
     color.lighten!
@@ -110,6 +110,14 @@ describe Paleta::Color do
     lightness = color.lightness
     color.lighten!(20)
     color.lightness.should == lightness + 20
+  end
+  
+  it "should return a copy of itself, lightened by a percentage" do
+    color = Paleta::Color.new(94, 161, 235)
+    lightness = color.lightness
+    copy = color.lighten(20)
+    copy.lightness.should == lightness + 20
+    color.lightness.should == lightness
   end
   
   it "should quietly maintain a maximum of 100 when lightening" do
@@ -128,6 +136,14 @@ describe Paleta::Color do
     color.lightness.should == lightness - 20
   end
   
+  it "should return a copy of itself, darkened by a percentage" do
+    color = Paleta::Color.new(94, 161, 235)
+    lightness = color.lightness
+    copy = color.darken(20)
+    copy.lightness.should == lightness - 20
+    color.lightness.should == lightness
+  end
+  
   it "should quietly maintain a minimum of 0 when darkening" do
     color = Paleta::Color.new(94, 161, 235)
     color.darken!(300)
@@ -142,6 +158,17 @@ describe Paleta::Color do
     color.blue.should == 20
   end
   
+  it "should return an inverted copy of itself" do
+    color = Paleta::Color.new(94, 161, 235)
+    copy = color.invert
+    copy.red.should == 161
+    copy.green.should == 94
+    copy.blue.should == 20
+    color.red.should == 94
+    color.green.should == 161
+    color.blue.should == 235
+  end
+  
   it "should desaturate" do
     color = Paleta::Color.new(94, 161, 235)
     color.desaturate!
@@ -151,10 +178,29 @@ describe Paleta::Color do
     color.blue.to_i.should == 164
   end
   
+  it "should return a desaturated copy of itself" do
+    color = Paleta::Color.new(94, 161, 235)
+    copy = color.desaturate
+    copy.saturation.should == 0
+    copy.red.to_i.should == 164
+    copy.green.to_i.should == 164
+    copy.blue.to_i.should == 164
+    color.saturation.to_i.should == 77
+    color.red.should == 94
+    color.green.should == 161
+    color.blue.should == 235
+  end
+  
   it "should become its complement" do
     color = Paleta::Color.new(:hsl, 90, 50, 50)
     color.complement!
     color.hue.should == 270
+  end
+  
+  it "should return its complement Color" do
+    color = Paleta::Color.new(:hsl, 90, 50, 50)
+    complement = color.complement
+    complement.hue.should == 270
   end
   
   it "should calculate its similarity to another Color" do
