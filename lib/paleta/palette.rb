@@ -15,6 +15,7 @@ module Paleta
     
     def <<(color)
       color.is_a?(Color) ? @colors << color : raise(ArgumentError, "Passed argument is not a Color")
+      return self
     end
     
     def push(color)

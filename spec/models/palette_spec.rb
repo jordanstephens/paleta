@@ -17,8 +17,9 @@ describe Paleta::Palette do
   it "should add Colors" do
     c1 = Paleta::Color.new(13, 57, 182)
     c2 = Paleta::Color.new(94, 161, 235)
+    c3 = Paleta::Color.new(0, 0, 0)
     palette = Paleta::Palette.new(c1)
-    palette << c2
+    palette << c2 << c3
     palette.include?(c2).should be_true
   end
   

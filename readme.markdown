@@ -74,8 +74,11 @@ and run
     color1 = Paleta::Color.new(13, 57, 182)
     color2 = Paleta::Color.new(94, 161, 235)
 	color3 = Paleta::Color.new(237, 182, 17)
-    palette = Paleta::Palette.new(color1, color2, color3)
-
+    palette = Paleta::Palette.new(color1, color2)
+	
+	# add Colors to a Palette
+	palette << color3
+	
 	# retreive a Color from a Palette
 	palette[1] # => color2
 	
