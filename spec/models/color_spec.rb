@@ -146,6 +146,9 @@ describe Paleta::Color do
     color = Paleta::Color.new(94, 161, 235)
     color.desaturate!
     color.saturation.should == 0
+    color.red.to_i.should == 164
+    color.green.to_i.should == 164
+    color.blue.to_i.should == 164
   end
   
   it "should become its complement" do
