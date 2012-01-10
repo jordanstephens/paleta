@@ -74,7 +74,7 @@ describe Paleta::Color do
     
     color.green = 123
     color.hue.to_i.should == 136
-    color.saturation.to_i.should == 100
+    color.saturation.to_i.should == 99
     color.lightness.to_i.should == 24
   
     color.blue = 241
@@ -85,20 +85,19 @@ describe Paleta::Color do
   
   it "should update its RGB value when its HSL value is updated" do
     color = Paleta::Color.new(0, 0, 255)
-    
     color.hue = 120
-    color.red.to_i.should == 255
-    color.green.to_i.should == 85
+    color.red.to_i.should == 0
+    color.green.to_i.should == 255
     color.blue.to_i.should == 0
     
     color.saturation = 50
-    color.red.to_i.should == 191
-    color.green.to_i.should == 106
+    color.red.to_i.should == 63
+    color.green.to_i.should == 191
     color.blue.to_i.should == 63
   
     color.lightness = 80
-    color.red.to_i.should == 229
-    color.green.to_i.should == 195
+    color.red.to_i.should == 178
+    color.green.to_i.should == 229
     color.blue.to_i.should == 178
   end
   
@@ -223,7 +222,7 @@ describe Paleta::Color do
   end
   
   it "should update its HSB and RGB components when its HEX value is updated" do
-    color = Paleta::Color.new
+    color = Paleta::Color.new(100, 100, 100)
     color.hex = "ffffff"
     color.red.should == 255
     color.green.should == 255

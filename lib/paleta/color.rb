@@ -172,22 +172,23 @@ module Paleta
       r = @red / 255.0 rescue 0.0
       g = @green / 255.0 rescue 0.0
       b = @blue / 255.0 rescue 0.0
-      
+
       min = [r, g, b].min
       max = [r, g, b].max
       delta = max - min
       
-      h = s = 0
+      h = 0
       l = (max + min) / 2.0
-      
+      s = ((l == 0 || l == 1) ? 0 : (delta / (1 - (2 * l - 1).abs)))
+
       if delta != 0
-        s = (l < 0.5) ? delta / (max + min) : delta / (2.0 - max - min)
         case max
-        when r; h = (g - b) / delta
-        when g; h = 2 + (b - r) / delta
-        when b; h = 4 + (r - g) / delta
+        when r; h = ((g - b) / delta) % 6
+        when g; h = ((b - r) / delta) + 2
+        when b; h = ((r - g) / delta) + 4
         end
       end
+      
       @hue = h * 60
       @hue += 360 if @hue < 0
       @saturation = s * 100
@@ -195,30 +196,28 @@ module Paleta
     end
     
     def update_rgb
+            
+      h = @hue / 60.0 rescue 0.0
+      s = @saturation / 100.0 rescue 0.0
+      l = @lightness / 100.0 rescue 0.0
+
+      d1 = (1 - (2 * l - 1).abs) * s
+      d2 = d1 * (1 - (h % 2 - 1).abs)
+      d3 = l - (d1 / 2.0)
       
-      h = @hue / 360.0 rescue 0
-      s = @saturation / 100.0 rescue 0
-      l = @lightness / 100.0 rescue 0
-      
-      if s == 0
-        @red = @green = @blue = l * 255
-      else
-        h /= 6.0
-        t2 = l < 0.5 ? l * (s + 1) : (l + s) - (l * s)
-        t1 = 2 * l - t2
-        
-        r = h + (1.0 / 3.0)
-        g = h
-        b = h - (1.0 / 3.0)
-        
-        r = hue_calc(r, t1, t2)
-        g = hue_calc(g, t1, t2)
-        b = hue_calc(b, t1, t2)
-        
-        @red = r * 255.0
-        @green = g * 255.0
-        @blue = b * 255.0
+      case h.to_i
+      when 0; @red, @green, @blue = d1, d2, 0
+      when 1; @red, @green, @blue = d2, d1, 0
+      when 2; @red, @green, @blue = 0, d1, d2
+      when 3; @red, @green, @blue = 0, d2, d1
+      when 4; @red, @green, @blue = d2, 0, d1
+      when 5; @red, @green, @blue = d1, 0, d2
+      else; @red, @green, @blue = 0, 0, 0
       end
+      
+      @red = 255 * (@red + d3)
+      @green = 255 * (@green + d3)
+      @blue = 255 * (@blue + d3)
     end
     
     def update_hex
