@@ -135,7 +135,7 @@ describe Paleta::Palette do
     p5.similarity(p6).round(5).should == 0.0047
   end
   
-  it "should generate a new Palette of shades of a single color" do
+  it "should generate a new Palette of shades of a single Color" do
     color = Paleta::Color.new(:hex, "ff0000")
     palette = Paleta::Palette.generate(:from => color, :size => 5)
     palette.each do |p|
@@ -150,8 +150,18 @@ describe Paleta::Palette do
     palette[4].lightness.should == 90
   end
   
-  it "should generate a new Palette of random colors" do
-    palette = Paleta::Palette.generate( :type => :random, :size => 5)
+  it "should generate a new Palette of Colors analogous to the seed Color" do
+    color = Paleta::Color.new(:hex, "0066cc")
+    palette = Paleta::Palette.generate(:type => :analogous, :from => color, :size => 5)
+    palette.size.should == 5
+    puts "\n"
+    palette.each do |p|
+      puts p.inspect
+    end
+  end
+  
+  it "should generate a new Palette of random Colors" do
+    palette = Paleta::Palette.generate(:type => :random, :size => 5)
     palette.size.should == 5
   end
 end

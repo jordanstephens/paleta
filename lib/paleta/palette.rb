@@ -105,21 +105,35 @@ module Paleta
       type = opts[:type] || :shades
       size = opts[:size] || 5
       case type
+      when :analogous; self.generate_analogous_palette_from_color(color, size)
+      when :shades; self.generate_shades_palette_from_color(color, size)
       when :random; self.generate_random_palette_from_color(color, size)
-      else self.generate_shades_palette_from_color(color, size)
+      else raise(ArgumentError, "Palette type is not defined. Try :shades, :analogous, or :random")
       end
     end
     
-    def self.generate_random_palette_from_color(color = nil, n = 5)
-      palette = color.is_a?(Color) ? self.new(color) : self.new
-      r = Random.new(Time.now.sec)
-      until palette.size == n
-        palette << Paleta::Color.new(r.rand(0..255), r.rand(0..255), r.rand(0..255))
+    private
+    
+    def self.generate_analogous_palette_from_color(color, n)
+      raise(ArgumentError, "Passed argument is not a Color") unless color.is_a?(Color)
+      palette = self.new(color)
+      step = 20
+      below = (n / 2)
+      above = (n % 2 == 0) ? (n / 2) - 1: (n / 2)
+      below.times do |i|
+        hue = color.hue - ((i + 1) * step)
+        hue += 360 if hue < 0
+        palette << Paleta::Color.new(:hsl, hue, color.saturation, color.lightness)
       end
-      palette
+      above.times do |i|
+        hue = color.hue + ((i + 1) * step)
+        hue -= 360 if hue > 360
+        palette << Paleta::Color.new(:hsl, hue, color.saturation, color.lightness)
+      end
+      palette.sort! { |a, b| a.hue <=> b.hue }
     end
     
-    def self.generate_shades_palette_from_color(color, n = 5)
+    def self.generate_shades_palette_from_color(color, n)
       raise(ArgumentError, "Passed argument is not a Color") unless color.is_a?(Color)
       palette = self.new(color)
       step = (100 / n)
@@ -137,7 +151,14 @@ module Paleta
       palette.sort! { |a, b| a.lightness <=> b.lightness }
     end
     
-    private
+    def self.generate_random_palette_from_color(color = nil, n)
+      palette = color.is_a?(Color) ? self.new(color) : self.new
+      r = Random.new(Time.now.sec)
+      until palette.size == n
+        palette << Paleta::Color.new(r.rand(0..255), r.rand(0..255), r.rand(0..255))
+      end
+      palette
+    end
     
     def fit
       # create a 3xn matrix where n = @colors.size to represent the set of colors
