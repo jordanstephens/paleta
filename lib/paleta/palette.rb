@@ -7,8 +7,9 @@ module Paleta
     
     attr_accessor :colors
     
-    def initialize(*colors)
+    def initialize(*args)
       @colors = []
+      colors = (args.length == 1 && args[0].is_a?(Array)) ? args[0] : args
       colors.each do |color|
         self << color
       end
@@ -39,12 +40,18 @@ module Paleta
       @colors.size
     end
     
+    def each
+      @colors.each { |c| yield c }
+    end
+    
     def sort &blk
       @colors.sort &blk
+      Paleta::Palette.new(@colors)
     end
     
     def sort! &blk
       @colors.sort! &blk
+      self
     end
     
     def include?(color)
@@ -101,6 +108,16 @@ module Paleta
       when :random; self.generate_random_palette_from_color(color, size)
       else self.generate_shades_palette_from_color(color, size)
       end
+    end
+    
+    def self.generate_random_palette_from_color(color, n = 5)
+      raise(ArgumentError, "Passed argument is not a Color") unless color.is_a?(Color)
+      palette = self.new(color)
+      r = Random.new(Time.now.sec)
+      until palette.size == n
+        palette << Paleta::Color.new(r.rand(0..255), r.rand(0..255), r.rand(0..255))
+      end
+      palette
     end
     
     def self.generate_shades_palette_from_color(color, n = 5)

@@ -149,4 +149,10 @@ describe Paleta::Palette do
     palette[3].lightness.should == 70
     palette[4].lightness.should == 90
   end
+  
+  it "should generate a new Palette of random colors" do
+    color = Paleta::Color.new(:hex, "ff0000")
+    palette = Paleta::Palette.generate( :type => :random, :from => color, :size => 5)
+
+  end
 end
