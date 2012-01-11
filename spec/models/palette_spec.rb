@@ -138,18 +138,11 @@ describe Paleta::Palette do
   it "should generate a new Palette of shades of a single color" do
     color = Paleta::Color.new(:hex, "ff0000")
     palette = Paleta::Palette.generate(:from => color, :size => 5)
-    palette[0].hue.should == color.hue
-    palette[1].hue.should == color.hue
-    palette[2].hue.should == color.hue
-    palette[3].hue.should == color.hue
-    palette[4].hue.should == color.hue
-    
-    palette[0].saturation.should == color.saturation
-    palette[1].saturation.should == color.saturation
-    palette[2].saturation.should == color.saturation
-    palette[3].saturation.should == color.saturation
-    palette[4].saturation.should == color.saturation
-    
+    palette.each do |p|
+      p.hue.should == color.hue
+      p.saturation.should == color.saturation
+    end
+        
     palette[0].lightness.should == 10
     palette[1].lightness.should == 30
     palette[2].lightness.should == 50

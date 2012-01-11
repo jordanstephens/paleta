@@ -3,6 +3,7 @@ require 'paleta/core_ext/math'
 module Paleta
   class Palette
     include Math
+    include Enumerable
     
     attr_accessor :colors
     
