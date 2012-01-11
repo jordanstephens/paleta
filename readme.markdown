@@ -93,30 +93,32 @@ and run
 	palette.invert!
 	
 	# calculate similarity of two Palettes
-    color4 = Paleta::Color.new(13, 57, 182)
-    color5 = Paleta::Color.new(237, 172, 33)
-    palette1 = Paleta::Palette.new(color4, color5)
+    color1 = Paleta::Color.new(13, 57, 182)
+    color2 = Paleta::Color.new(237, 172, 33)
+    palette1 = Paleta::Palette.new(color1, color2)
     
-    color6 = Paleta::Color.new(13, 57, 182)
-    color7 = Paleta::Color.new(94, 161, 235)
-    palette2 = Paleta::Palette.new(color6, color7)
+    color3 = Paleta::Color.new(13, 57, 182)
+    color4 = Paleta::Color.new(94, 161, 235)
+    palette2 = Paleta::Palette.new(color3, color4)
 
 	# Palette#similarity calculates the similarity between two Palettes and returns a
 	# value in 0..1, with 0 being identical and 1 being as dissimilar as possible	
     palette1.similarity(palette2) # => 0.0046992695975874915
 	
 	# generate random Palette
-	palette3 = Paleta::Palette.generate(:type => :random, :size = 5)
+	palette = Paleta::Palette.generate(:type => :random, :size = 5)
 	
 	# generate a Palette of shades from a Color
-	color8 = Paleta::Color.new(:hex, "ff0000")
-	palette4 = Paleta::Palette.generate(:type => :shades, :from => color8, :size => 5)
+	color = Paleta::Color.new(:hex, "ff0000")
+	palette = Paleta::Palette.generate(:type => :shades, :from => color, :size => 5)
 	
-	# generate a Palette of Colors analogoues to the seed Color
-    color9 = Paleta::Color.new(:hex, "0066cc")
-    palette5 = Paleta::Palette.generate(:type => :analogous, :from => color9, :size => 5)
+	# generate a Palette of Colors analogous to the seed Color
+    color = Paleta::Color.new(:hex, "0066cc")
+    palette = Paleta::Palette.generate(:type => :analogous, :from => color, :size => 5)
 	
-	
+	# generate a Palette of Colors monochromatic to the seed Color
+    color = Paleta::Color.new(:hex, "336699")
+    palette = Paleta::Palette.generate(:type => :monochromatic, :from => color, :size => 5)
 	
 See the [documentation](http://rubydoc.info/gems/paleta/ "Documentation").
 
