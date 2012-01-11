@@ -230,15 +230,6 @@ module Paleta
       @hex = "#{r}#{g}#{b}".upcase
     end
     
-    def hue_calc(value, t1, t2)
-      value += 1 if value < 0
-      value -= 1 if value > 1
-      return (t1 + (t2 - t1) * 6 * value) if 6 * value < 1
-      return t2 if 2 * value < 1
-      return (t1 + (t2 - t1) * (2.0 / 3.0 - value) * 6) if 3 * value < 2
-      return t1;
-    end
-    
     def range_validator(val, range)
       range.include?(val) ? val : raise(ArgumentError, "Component range exceeded")
     end
