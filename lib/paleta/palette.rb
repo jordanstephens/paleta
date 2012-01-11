@@ -82,7 +82,9 @@ module Paleta
       
       d1 + d2
     end
-        
+    
+    private
+    
     def fit
       # create a 3xn matrix where n = @colors.size to represent the set of colors
       reds = @colors.map { |c| c.red }
