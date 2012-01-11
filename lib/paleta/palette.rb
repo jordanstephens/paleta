@@ -15,7 +15,7 @@ module Paleta
     
     def <<(color)
       color.is_a?(Color) ? @colors << color : raise(ArgumentError, "Passed argument is not a Color")
-      return self
+      self
     end
     
     def push(color)
@@ -81,6 +81,35 @@ module Paleta
       d2 = distance(b[0], b[1]) / d_max
       
       d1 + d2
+    end
+    
+    def self.generate(opts = {})
+      raise(ArgumentError, "Pass a Color using :from, generate( :from => Color )") if opts.empty?
+      color = opts[:from]
+      type = opts[:type] || :shades
+      size = opts[:size] || 5
+      case type
+      when :random; self.generate_random_palette_from_color(color, size)
+      else self.generate_shades_palette_from_color(color, size)
+      end
+    end
+    
+    def self.generate_shades_palette_from_color(color, n = 5)
+      raise(ArgumentError, "Passed argument is not a Color") unless color.is_a?(Color)
+      palette = self.new(color)
+      step = (100 / n)
+      lightness = color.lightness
+      d = :down
+      until palette.size == n
+        lightness -= step if d == :down
+        lightness += step if d == :up
+        palette << Paleta::Color.new(:hsl, color.hue, color.saturation, lightness)
+        if lightness - step < 0
+          d = :up
+          lightness = color.lightness
+        end
+      end
+      palette.colors.sort! { |a, b| a.lightness <=> b.lightness }
     end
     
     private

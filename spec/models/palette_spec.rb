@@ -134,4 +134,26 @@ describe Paleta::Palette do
     p6 = Paleta::Palette.new(c9, c10)
     p5.similarity(p6).round(5).should == 0.0047
   end
+  
+  it "should generate a new Palette of shades of a single color" do
+    color = Paleta::Color.new(:hex, "ff0000")
+    palette = Paleta::Palette.generate(:from => color, :size => 5)
+    palette[0].hue.should == color.hue
+    palette[1].hue.should == color.hue
+    palette[2].hue.should == color.hue
+    palette[3].hue.should == color.hue
+    palette[4].hue.should == color.hue
+    
+    palette[0].saturation.should == color.saturation
+    palette[1].saturation.should == color.saturation
+    palette[2].saturation.should == color.saturation
+    palette[3].saturation.should == color.saturation
+    palette[4].saturation.should == color.saturation
+    
+    palette[0].lightness.should == 10
+    palette[1].lightness.should == 30
+    palette[2].lightness.should == 50
+    palette[3].lightness.should == 70
+    palette[4].lightness.should == 90
+  end
 end
