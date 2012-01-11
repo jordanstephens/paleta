@@ -38,6 +38,14 @@ module Paleta
       @colors.size
     end
     
+    def sort &blk
+      @colors.sort &blk
+    end
+    
+    def sort! &blk
+      @colors.sort! &blk
+    end
+    
     def include?(color)
       @colors.include?(color)
     end
@@ -109,7 +117,7 @@ module Paleta
           lightness = color.lightness
         end
       end
-      palette.colors.sort! { |a, b| a.lightness <=> b.lightness }
+      palette.sort! { |a, b| a.lightness <=> b.lightness }
     end
     
     private
