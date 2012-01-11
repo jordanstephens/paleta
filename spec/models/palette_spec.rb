@@ -151,8 +151,7 @@ describe Paleta::Palette do
   end
   
   it "should generate a new Palette of random colors" do
-    color = Paleta::Color.new(:hex, "ff0000")
-    palette = Paleta::Palette.generate( :type => :random, :from => color, :size => 5)
-
+    palette = Paleta::Palette.generate( :type => :random, :size => 5)
+    palette.size.should == 5
   end
 end

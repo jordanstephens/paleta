@@ -110,9 +110,8 @@ module Paleta
       end
     end
     
-    def self.generate_random_palette_from_color(color, n = 5)
-      raise(ArgumentError, "Passed argument is not a Color") unless color.is_a?(Color)
-      palette = self.new(color)
+    def self.generate_random_palette_from_color(color = nil, n = 5)
+      palette = color.is_a?(Color) ? self.new(color) : self.new
       r = Random.new(Time.now.sec)
       until palette.size == n
         palette << Paleta::Color.new(r.rand(0..255), r.rand(0..255), r.rand(0..255))
