@@ -106,9 +106,10 @@ module Paleta
       size = opts[:size] || 5
       case type
       when :analogous; self.generate_analogous_palette_from_color(color, size)
+      when :monochromatic; self.generate_monochromatic_palette_from_color(color, size)
       when :shades; self.generate_shades_palette_from_color(color, size)
       when :random; self.generate_random_palette_from_color(color, size)
-      else raise(ArgumentError, "Palette type is not defined. Try :shades, :analogous, or :random")
+      else raise(ArgumentError, "Palette type is not defined. Try :analogous, :monochromatic, :shades, or :random")
       end
     end
     
@@ -131,6 +132,24 @@ module Paleta
         palette << Paleta::Color.new(:hsl, hue, color.saturation, color.lightness)
       end
       palette.sort! { |a, b| a.hue <=> b.hue }
+    end
+    
+    def self.generate_monochromatic_palette_from_color(color, n)
+      raise(ArgumentError, "Passed argument is not a Color") unless color.is_a?(Color)
+      palette = self.new(color)
+      step = (100 / n)
+      saturation = color.saturation
+      d = :down
+      until palette.size == n
+        saturation -= step if d == :down
+        saturation += step if d == :up
+        palette << Paleta::Color.new(:hsl, color.hue, saturation, color.lightness)
+        if saturation - step < 0
+          d = :up
+          saturation = color.saturation
+        end
+      end
+      palette.sort! { |a, b| a.saturation <=> b.saturation }
     end
     
     def self.generate_shades_palette_from_color(color, n)

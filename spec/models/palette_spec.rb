@@ -153,7 +153,30 @@ describe Paleta::Palette do
   it "should generate a new Palette of Colors analogous to the seed Color" do
     color = Paleta::Color.new(:hex, "0066cc")
     palette = Paleta::Palette.generate(:type => :analogous, :from => color, :size => 5)
-    palette.size.should == 5
+    palette.each do |p|
+      p.lightness.should == color.lightness
+      p.saturation.should == color.saturation
+    end
+    palette[0].hue.should == 170
+    palette[1].hue.should == 190
+    palette[2].hue.should == 210
+    palette[3].hue.should == 230
+    palette[4].hue.should == 250
+  end
+  
+  it "should generate a new Palette of Colors monochromatic to the seed Color" do
+    color = Paleta::Color.new(:hex, "0066cc")
+    palette = Paleta::Palette.generate(:type => :monochromatic, :from => color, :size => 5)
+    palette.each do |p|
+      p.hue.should == color.hue
+      p.lightness.should == color.lightness
+    end
+    palette[0].saturation.should == 20
+    palette[1].saturation.should == 40
+    palette[2].saturation.should == 60
+    palette[3].saturation.should == 80
+    palette[4].saturation.should == 100
+    
   end
   
   it "should generate a new Palette of random Colors" do
