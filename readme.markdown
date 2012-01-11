@@ -106,11 +106,17 @@ and run
     palette1.similarity(palette2) # => 0.0046992695975874915
 	
 	# generate random Palette
-	Paleta::Palette.generate(:type => :random, :size = 5)
+	palette3 = Paleta::Palette.generate(:type => :random, :size = 5)
 	
-	#generate a Palette of shades from a Color
+	# generate a Palette of shades from a Color
 	color8 = Paleta::Color.new(:hex, "ff0000")
-	Paleta::Palette.generate(:type => :shades, :from =>color8, :size => 5)
+	palette4 = Paleta::Palette.generate(:type => :shades, :from => color8, :size => 5)
+	
+	# generate a Palette of Colors analogoues to the seed Color
+    color9 = Paleta::Color.new(:hex, "0066cc")
+    palette5 = Paleta::Palette.generate(:type => :analogous, :from => color9, :size => 5)
+	
+	
 	
 See the [documentation](http://rubydoc.info/gems/paleta/ "Documentation").
 

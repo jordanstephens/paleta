@@ -154,10 +154,6 @@ describe Paleta::Palette do
     color = Paleta::Color.new(:hex, "0066cc")
     palette = Paleta::Palette.generate(:type => :analogous, :from => color, :size => 5)
     palette.size.should == 5
-    puts "\n"
-    palette.each do |p|
-      puts p.inspect
-    end
   end
   
   it "should generate a new Palette of random Colors" do
