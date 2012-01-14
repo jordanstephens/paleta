@@ -22,77 +22,97 @@ and run
 
 ### Color
 
-	# create a Color with HSL components
+Paleta allows users to create Color objects. Color objects can be defined by HSL, RGB or HEX values and can be manipulated and compared.
+
+#### Creating Colors
+
+Colors can be created using RGB or HSL components, or by using a HEX value by passing in a flag of the desired format as the first parameter. If no format flag is used, RGB is assumed.
+	
 	color = Paleta::Color.new(:hsl, 280, 37, 68)
-	
-	# create a Color with RGB components
 	color = Paleta::Color.new(:rgb, 94, 161, 235)
-	
-	# create a Color with a HEX value
 	color = Paleta::Color.new(:hex, "5EA1EB")
 	
     # creating a Color with no flag defaults to RGB components
 	color = Paleta::Color.new(94, 161, 235)
 	
-	# access component values
+Individual component values can be accessed by name.
+
 	color.red # => 94
 	color.green # => 161
 	color.blue # => 235
-	
-	# HSL components are maintained too!
 	color.hue # => 211.48936170212767
 	color.saturation # => 77.90055248618782
 	color.lightness # => 64.50980392156862
-	
-	# a HEX value is also maintained for each Color
 	color.hex # => "5EA1EB"
 	
-	# lighten by a percentage
+#### Manipulating Colors
+
+Colors can be lightened or darkened by a percentage.
+
 	color.lighten!(10) 
+	color.darken!(30) 
 	
-	# darken by a percentage
-	color.darken!(10) 
-	
-	# desaturate a Color
+Colors can be desaturated
+
 	color.desaturate!
 	
-	# convert a Color into its complement
+Colors can be turned into their complement Colors.
+
 	color.complement!
-	
-	# invert a Color
+
+Colors can be inverted
+
 	color.invert!
 	
-	# calculate similarity between Colors
-	# Color#similarity calculates the similarity between two Colors and returns a
-	# value in 0..1, with 0 being identical and 1 being as dissimilar as possible
+**Note** all of the previous methods directly manipulate the object on which they were called. If you would like to create a new Color object that is a copy of the original color (but with the desired manipulation), call the desired method without the trailing bang `!`.
+
+For example, lets create a new Color that is the complement of a Color we have already defined.
+
+	new_color = color.complement
+	
+#### Comparing Colors
+
+Colors can calculate their similarity to other Colors. The `similarity` method returns a value between 0 and 1, with 0 being identical and 1 being as dissimilar as possible.
+
+	color = Paleta::Color.new(:hsl, 280, 37, 68)
 	color2 = Paleta::Color.new(237, 172, 33)
-	color.similarity(color2) # => 0.5609077061558945
+	color.similarity(color2) # => 0.4100287904421024
 	
 ### Palette
 
-	# add Colors to a Palette
+Palettes are collections of Colors, they share many common Array methods such as `push`, `pop`, `sort`, `include?` and `each`. Palettes also allow collections of Colors to be manipulated as a whole and to be compared to each other.
+
+#### Creating a Palette
+
+Palettes can be created by passing a list of Colors to the Palette constructor, or on the fly with `push` and `<<`. 
+
     color1 = Paleta::Color.new(13, 57, 182)
     color2 = Paleta::Color.new(94, 161, 235)
 	color3 = Paleta::Color.new(237, 182, 17)
     palette = Paleta::Palette.new(color1, color2)
 	
-	# add Colors to a Palette
 	palette << color3
 	
-	# retreive a Color from a Palette
+#### Retrieving and Removing Colors from Palettes
+
+Colors can be accessed and removed by index.
+	
 	palette[1] # => color2
 	
-	# remove a Color from a Palette by index
 	palette.delete_at(2)
+
+#### Manipulating Palettes
+
+Palettes can be lightened, darkened or inverted as a whole.
 	
-	# lighten and darken an entire Palette by a percentage
 	palette.lighten!(15)
 	palette.darken!(20)
-
-	# invert each color in a Palette
 	palette.invert!
 	
-	# calculate similarity of two Palettes
+#### Comparing Palettes
+
+Palettes can calculate their similarity to other Palettes by using the `similarity` method. Just as with `Color#similarity`, this method returns a value between 0 and 1, with 0 being identical and 1 being as dissimilar as possible. 
+
     color1 = Paleta::Color.new(13, 57, 182)
     color2 = Paleta::Color.new(237, 172, 33)
     palette1 = Paleta::Palette.new(color1, color2)
@@ -101,25 +121,33 @@ and run
     color4 = Paleta::Color.new(94, 161, 235)
     palette2 = Paleta::Palette.new(color3, color4)
 
-	# Palette#similarity calculates the similarity between two Palettes and returns a
-	# value in 0..1, with 0 being identical and 1 being as dissimilar as possible	
     palette1.similarity(palette2) # => 0.0046992695975874915
 	
-	# generate random Palette
+#### Generating Palettes
+
+Palettes can be generated from a "seed" Color by using the `generate` method.
+
+**Generate a random Palette**
+
 	palette = Paleta::Palette.generate(:type => :random, :size = 5)
 	
-	# generate a Palette of shades from a Color
+**Generate a Palette of shades from a Color**
+
 	color = Paleta::Color.new(:hex, "ff0000")
 	palette = Paleta::Palette.generate(:type => :shades, :from => color, :size => 5)
 	
-	# generate a Palette of Colors analogous to the seed Color
+**Generate a Palette of Colors analogous to the seed Color**
+
     color = Paleta::Color.new(:hex, "0066cc")
     palette = Paleta::Palette.generate(:type => :analogous, :from => color, :size => 5)
 	
-	# generate a Palette of Colors monochromatic to the seed Color
+**Generate a Palette of Colors monochromatic to the seed Color**
+
     color = Paleta::Color.new(:hex, "336699")
     palette = Paleta::Palette.generate(:type => :monochromatic, :from => color, :size => 5)
-	
+
+***
+
 See the [documentation](http://rubydoc.info/gems/paleta/ "Documentation").
 
  

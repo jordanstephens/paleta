@@ -99,6 +99,7 @@ module Paleta
       d1 + d2
     end
     
+    # TODO: complementary, split-complementary, triad, tetrad
     def self.generate(opts = {})
       raise(ArgumentError, "Pass a Color using :from, generate( :from => Color )") if opts.empty?
       color = opts[:from]
