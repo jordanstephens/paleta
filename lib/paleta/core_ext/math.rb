@@ -9,42 +9,39 @@ module Math
     sqrt(sum)
   end
   
-  class MultipleRegression
-    attr_accessor :slope, :offset
-
-    def initialize dr, dg, db
-      
-      @slope, @offset = {}, {}
-      @size = dr.size
-      raise "arguments not same length!" unless @size == dg.size && @size == db.size
+  def multiple_regression(dr, dg, db)
+    regression = {}
+    regression[:slope], regression[:offset] = {}, {}
+    size = dr.size
     
-      if @size == 1
-        @slope = { :r => dr[0], :g => dg[0], :b => db[0] }
-        @offset = { :r => 0, :g => 0, :b => 0 }
-        return
-      end
+    raise "arguments not same length!" unless size == dg.size && size == db.size
     
-      srr = sgg = sbb = srg = sbr = sgb = sr = sb = sg = 0
-      dr.zip(dg,db).each do |r,g,b|
-        srr += r ** 2
-        sgg += g ** 2
-        srg += r * g
-        sbr += b * r
-        sgb += g * b
-        sr  += r
-        sg  += g
-        sb  += b
-      end
-      
-      @slope[:r] = ( @size * srg - sr * sb ) / ( @size * srr - sr ** 2 ).to_f
-      @slope[:g] = ( @size * sgb - sb * sg ) / ( @size * sgg - sb ** 2 ).to_f
-      @slope[:b] = ( @size * sgb - sb * sg ) / ( @size * sbb - sg ** 2 ).to_f
-    
-      @offset[:r] = (sb - @slope[:r] * sr) / @size
-      @offset[:g] = (sg - @slope[:g] * sb) / @size
-      @offset[:b] = (sr - @slope[:b] * sg) / @size
-      
-      return
+    if size == 1
+      regression[:slope] = { :r => dr[0], :g => dg[0], :b => db[0] }
+      regression[:offset] = { :r => 0, :g => 0, :b => 0 }
+      return regression
     end
+    
+    srr = sgg = sbb = srg = sbr = sgb = sr = sb = sg = 0
+    dr.zip(dg,db).each do |r,g,b|
+      srr += r ** 2
+      sgg += g ** 2
+      srg += r * g
+      sbr += b * r
+      sgb += g * b
+      sr  += r
+      sg  += g
+      sb  += b
+    end
+      
+    regression[:slope][:r] = ( size * srg - sr * sb ) / ( size * srr - sr ** 2 ).to_f
+    regression[:slope][:g] = ( size * sgb - sb * sg ) / ( size * sgg - sb ** 2 ).to_f
+    regression[:slope][:b] = ( size * sgb - sb * sg ) / ( size * sbb - sg ** 2 ).to_f
+    
+    regression[:offset][:r] = (sb - regression[:slope][:r] * sr) / size
+    regression[:offset][:g] = (sg - regression[:slope][:g] * sb) / size
+    regression[:offset][:b] = (sr - regression[:slope][:b] * sg) / size
+    
+    regression
   end
 end

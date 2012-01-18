@@ -83,11 +83,11 @@ module Paleta
       # r[i] is the Math::MultipleRegression of the Palette in RGB space
       r[0] = fit
       r[1] = palette.fit
-      
+            
       [0, 1].each do |i|
         [:r, :g, :b].each do |k|
-          a[i][k] = 0 * r[i].slope[k] + r[i].offset[k]
-          b[i][k] = 255 * r[i].slope[k] + r[i].offset[k]
+          a[i][k] = 0 * r[i][:slope][k] + r[i][:offset][k]
+          b[i][k] = 255 * r[i][:slope][k] + r[i][:offset][k]
         end
       end
       
@@ -185,7 +185,7 @@ module Paleta
       reds = @colors.map { |c| c.red }
       greens = @colors.map { |c| c.green }
       blues = @colors.map { |c| c.blue }
-      MultipleRegression.new(reds, greens, blues)
+      multiple_regression(reds, greens, blues)
     end
   end
 end
