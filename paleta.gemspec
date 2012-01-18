@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.email         = ['iam@jordanstephens.net']
   gem.description   = 'A gem for working with color palettes'
   gem.summary       = 'A little library for creating, manipulating and comparing colors and color palettes'
-  gem.homepage      = 'http://jordanstephens.net'
+  gem.homepage      = 'http://rubygems.org/gems/paleta'
 
   gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   gem.files         = `git ls-files`.split("\n")

@@ -176,7 +176,6 @@ describe Paleta::Palette do
     palette[2].saturation.should == 60
     palette[3].saturation.should == 80
     palette[4].saturation.should == 100
-    
   end
   
   it "should generate a new Palette of random Colors" do
