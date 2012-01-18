@@ -105,7 +105,7 @@ module Paleta
     def lighten(percent = 5)
       copy = self.class.new(self)
       copy.lighten!(percent)
-      return copy
+      copy
     end
     
     def lighten!(percent = 5)
@@ -119,7 +119,7 @@ module Paleta
     def darken(percent = 5)
       copy = self.class.new(self)
       copy.darken!(percent)
-      return copy
+      copy
     end
     
     def darken!(percent = 5)
@@ -133,7 +133,7 @@ module Paleta
     def invert
       copy = self.class.new(self)
       copy.invert!
-      return copy
+      copy
     end
     
     def invert!
@@ -148,7 +148,7 @@ module Paleta
     def desaturate
       copy = self.class.new(self)
       copy.desaturate!
-      return copy
+      copy
     end
     
     def desaturate!
@@ -161,7 +161,7 @@ module Paleta
     def complement
       copy = self.class.new(self)
       copy.complement!
-      return copy
+      copy
     end
     
     def complement!
