@@ -109,6 +109,7 @@ module Paleta
       @lightness = 100 if @lightness > 100
       update_rgb
       update_hex
+      self
     end
     
     def darken(percent = 5)
@@ -122,6 +123,7 @@ module Paleta
       @lightness = 0 if @lightness < 0
       update_rgb
       update_hex
+      self
     end
     
     def invert
@@ -136,6 +138,7 @@ module Paleta
       @blue = 255 - @blue
       update_hsl
       update_hex
+      self
     end
     
     def desaturate
@@ -148,6 +151,7 @@ module Paleta
       @saturation = 0
       update_rgb
       update_hex
+      self
     end
     
     def complement
@@ -160,6 +164,7 @@ module Paleta
       @hue = (@hue + 180) % 360
       update_rgb
       update_hex
+      self
     end
     
     def similarity(color)
