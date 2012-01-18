@@ -99,12 +99,12 @@ describe Paleta::Palette do
     c3 = Paleta::Color.new(237, 172, 33)
     palette = Paleta::Palette.new(c1, c2, c3)
     r = palette.fit
-    r.slope[:r].should == 0.4632575855725132
-    r.slope[:g].should == -0.5730072013906133
-    r.slope[:b].should == 0.06837037037037037
-    r.offset[:r].should == 76.87979685435182
-    r.offset[:g].should == 224.49093618077973
-    r.offset[:b].should == 104.41111111111111
+    r.slope[:r].should == 0.19585157930194594
+    r.slope[:g].should == 0.5276697919048708
+    r.slope[:b].should == 0.09102564102564102
+    r.offset[:r].should == 127.54235224004354
+    r.offset[:g].should == 50.849531214269376
+    r.offset[:b].should == 102.83333333333333
   end
   
   it "should calculate its similarity to another Palette" do
@@ -132,7 +132,7 @@ describe Paleta::Palette do
     c9 = Paleta::Color.new(13, 57, 182)
     c10 = Paleta::Color.new(94, 161, 235)
     p6 = Paleta::Palette.new(c9, c10)
-    p5.similarity(p6).round(5).should == 0.0047
+    p5.similarity(p6).round(5).should == 0.00627
   end
   
   it "should generate a new Palette of shades of a single Color" do

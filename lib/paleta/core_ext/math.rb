@@ -32,8 +32,8 @@ module Math
         sbr += b * r
         sgb += g * b
         sr  += r
-        sb  += g
-        sg  += b
+        sg  += g
+        sb  += b
       end
       
       @slope[:r] = ( @size * srg - sr * sb ) / ( @size * srr - sr ** 2 ).to_f
