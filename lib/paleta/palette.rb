@@ -85,7 +85,7 @@ module Paleta
       r[1] = palette.fit
             
       [0, 1].each do |i|
-        [:r, :g, :b].each do |k|
+        [:x, :y, :z].each do |k|
           a[i][k] = 0 * r[i][:slope][k] + r[i][:offset][k]
           b[i][k] = 255 * r[i][:slope][k] + r[i][:offset][k]
         end

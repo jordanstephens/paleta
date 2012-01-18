@@ -9,38 +9,38 @@ module Math
     sqrt(sum)
   end
   
-  def multiple_regression(dr, dg, db)
+  def multiple_regression(dx, dy, dz)
     regression = {}
     regression[:slope], regression[:offset] = {}, {}
-    size = dr.size
+    size = dx.size
     
-    raise "arguments not same length!" unless size == dg.size && size == db.size
+    raise "arguments not same length!" unless size == dy.size && size == dz.size
     
     if size == 1
-      regression[:slope] = { :r => dr[0], :g => dg[0], :b => db[0] }
-      regression[:offset] = { :r => 0, :g => 0, :b => 0 }
+      regression[:slope] = { :x => dx[0], :y => dy[0], :z => dz[0] }
+      regression[:offset] = { :x => 0, :y => 0, :z => 0 }
       return regression
     end
     
-    srr = sgg = sbb = srg = sbr = sgb = sr = sb = sg = 0
-    dr.zip(dg,db).each do |r,g,b|
-      srr += r ** 2
-      sgg += g ** 2
-      srg += r * g
-      sbr += b * r
-      sgb += g * b
-      sr  += r
-      sg  += g
-      sb  += b
+    sxx = syy = szz = sxy = szx = syz = sx = sy = sz = 0
+    dx.zip(dy, dz).each do |x, y, z|
+      sxx += x ** 2
+      syy += y ** 2
+      sxy += x * y
+      szx += z * x
+      syz += y * z
+      sx  += x
+      sy  += y
+      sz  += z
     end
       
-    regression[:slope][:r] = ( size * srg - sr * sb ) / ( size * srr - sr ** 2 ).to_f
-    regression[:slope][:g] = ( size * sgb - sb * sg ) / ( size * sgg - sb ** 2 ).to_f
-    regression[:slope][:b] = ( size * sgb - sb * sg ) / ( size * sbb - sg ** 2 ).to_f
+    regression[:slope][:x] = ( size * sxy - sx * sz ) / ( size * sxx - sx ** 2 ).to_f
+    regression[:slope][:y] = ( size * syz - sz * sy ) / ( size * syy - sz ** 2 ).to_f
+    regression[:slope][:z] = ( size * syz - sz * sy ) / ( size * szz - sy ** 2 ).to_f
     
-    regression[:offset][:r] = (sb - regression[:slope][:r] * sr) / size
-    regression[:offset][:g] = (sg - regression[:slope][:g] * sb) / size
-    regression[:offset][:b] = (sr - regression[:slope][:b] * sg) / size
+    regression[:offset][:x] = (sz - regression[:slope][:x] * sx) / size
+    regression[:offset][:y] = (sy - regression[:slope][:y] * sz) / size
+    regression[:offset][:z] = (sx - regression[:slope][:z] * sy) / size
     
     regression
   end
