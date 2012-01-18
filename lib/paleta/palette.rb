@@ -81,7 +81,7 @@ module Paleta
       (0..1).each { |i| a[i], b[i] = {}, {} }
       
       # r[i] is the Math::MultipleRegression of the Palette in RGB space
-      r[0] = self.fit
+      r[0] = fit
       r[1] = palette.fit
       
       [0, 1].each do |i|
