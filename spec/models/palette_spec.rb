@@ -182,4 +182,13 @@ describe Paleta::Palette do
     palette = Paleta::Palette.generate(:type => :random, :size => 5)
     palette.size.should == 5
   end
+  
+  it "should generate a new Palette of Colors complementary to the seed Color" do
+    color = Paleta::Color.new(:hex, "0066cc")
+    palette = Paleta::Palette.generate(:type => :complementary, :from => color, :size => 5)
+    palette.each do |c|
+      c.lightness.should == color.lightness
+      [color.hue, color.complement.hue].include?(c.hue).should be_true
+    end
+  end
 end

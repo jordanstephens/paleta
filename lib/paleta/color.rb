@@ -98,6 +98,10 @@ module Paleta
       update_hsl
     end
     
+    def ==(color)
+      color.is_a?(Color) ? (self.hex == color.hex) : false
+    end
+    
     def lighten(percent = 5)
       copy = self.class.new(self)
       copy.lighten!(percent)

@@ -107,6 +107,7 @@ module Paleta
       size = opts[:size] || 5
       case type
       when :analogous; self.generate_analogous_palette_from_color(color, size)
+      when :complementary; self.generate_complementary_palette_from_color(color, size)
       when :monochromatic; self.generate_monochromatic_palette_from_color(color, size)
       when :shades; self.generate_shades_palette_from_color(color, size)
       when :random; self.generate_random_palette_from_color(color, size)
@@ -133,6 +134,30 @@ module Paleta
         palette << Paleta::Color.new(:hsl, hue, color.saturation, color.lightness)
       end
       palette.sort! { |a, b| a.hue <=> b.hue }
+    end
+    
+    def self.generate_complementary_palette_from_color(color, n)
+      raise(ArgumentError, "Passed argument is not a Color") unless color.is_a?(Color)
+      complement = color.complement
+      palette = self.new(color, complement)
+      step = ugap = dgap = 100 / n
+      hue = [color.hue, complement.hue]
+      i = j = 0
+      s = color.saturation
+      until palette.size == n        
+        if color.saturation + ugap < 100
+          s = color.saturation + ugap
+          ugap += step
+        else
+          s = color.saturation - dgap
+          dgap += step
+        end if j == 3 || j == 1
+        c = Paleta::Color.new(:hsl, hue[i], s, color.lightness)
+        palette << c if c != color && c != complement
+        i += 1; j += 1; i %= 2; j %= 4
+      end
+      
+      palette.sort! { |a, b| a.saturation <=> b.saturation }
     end
     
     def self.generate_monochromatic_palette_from_color(color, n)
