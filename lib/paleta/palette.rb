@@ -115,6 +115,7 @@ module Paleta
       when :analogous; self.generate_analogous_from_color(color, size)
       when :complementary; self.generate_complementary_from_color(color, size)
       when :triad; self.generate_triad_from_color(color, size)
+      when :tetrad; self.generate_tetrad_from_color(color, size)
       when :monochromatic; self.generate_monochromatic_from_color(color, size)
       when :shades; self.generate_shades_from_color(color, size)
       when :random; self.generate_random_from_color(color, size)
@@ -147,8 +148,7 @@ module Paleta
       raise(ArgumentError, "Passed argument is not a Color") unless color.is_a?(Color)
       complement = color.complement
       palette = self.new(color, complement)
-      hues = [color.hue, complement.hue]
-      palette << add_monochromatic_in_hues_of_color(palette, hues, color, n - palette.size)
+      palette << add_monochromatic_in_hues_of_color(palette, color, n - palette.size)
       palette.sort! { |a, b| a.saturation <=> b.saturation }
     end
     
@@ -157,8 +157,17 @@ module Paleta
       color2 = Paleta::Color.new(:hsl, (color.hue + 120) % 360, color.saturation, color.lightness)
       color3 = Paleta::Color.new(:hsl, (color2.hue + 120) % 360, color2.saturation, color2.lightness)
       palette = self.new(color, color2, color3)
-      hues = [color.hue, color2.hue, color3.hue]
-      palette << add_monochromatic_in_hues_of_color(palette, hues, color, n - palette.size)
+      palette << add_monochromatic_in_hues_of_color(palette, color, n - palette.size)
+      palette.sort! { |a, b| a.saturation <=> b.saturation }
+    end
+    
+    def self.generate_tetrad_from_color(color, n)
+      raise(ArgumentError, "Passed argument is not a Color") unless color.is_a?(Color)
+      color2 = Paleta::Color.new(:hsl, (color.hue + 90) % 360, color.saturation, color.lightness)
+      color3 = Paleta::Color.new(:hsl, (color2.hue + 90) % 360, color2.saturation, color2.lightness)
+      color4 = Paleta::Color.new(:hsl, (color3.hue + 90) % 360, color3.saturation, color3.lightness)
+      palette = self.new(color, color2, color3, color4)
+      palette << add_monochromatic_in_hues_of_color(palette, color, n - palette.size)
       palette.sort! { |a, b| a.saturation <=> b.saturation }
     end
     
@@ -207,14 +216,14 @@ module Paleta
       palette
     end
     
-    def self.add_monochromatic_in_hues_of_color(palette, hues, color, size)
-      raise(ArgumentError, "First argument is not an Array") unless hues.is_a?(Array) 
-      raise(ArgumentError, "Second argument is not a Color") unless color.is_a?(Color) 
+    def self.add_monochromatic_in_hues_of_color(palette, color, size)
+      raise(ArgumentError, "Second argument is not a Color") unless color.is_a?(Color)       
+      hues = palette.map { |c| c.hue }
       step = ugap = dgap = 100 / size
       i = j = 0
       s = color.saturation
-      palette = Paleta::Palette.new
-      until palette.size == size    
+      new_palette = Paleta::Palette.new
+      until new_palette.size == size    
         if color.saturation + ugap < 100
           s = color.saturation + ugap
           ugap += step
@@ -222,11 +231,11 @@ module Paleta
           s = color.saturation - dgap
           dgap += step
         end if j == 3 || j == 1
-        c = Paleta::Color.new(:hsl, hues[i], s, color.lightness)
-        palette << c unless palette.include?(c)
+        c = Paleta::Color.new(:hsl, hues[i], s, color.lightness)        
+        new_palette << c unless palette.include?(c)
         i += 1; j += 1; i %= hues.size; j %= (2 * hues.size)
       end
-      palette
+      new_palette
     end
     
     def fit

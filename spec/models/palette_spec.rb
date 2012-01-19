@@ -204,4 +204,15 @@ describe Paleta::Palette do
       [color.hue, (color.hue + 120) % 360, (color.hue + 240) % 360].include?(c.hue).should be_true
     end
   end
+
+  it "should generate a new tetrad Palette from the seed Color" do
+    color = Paleta::Color.new(:hex, "0066cc")
+    palette = Paleta::Palette.generate(:type => :tetrad, :from => color, :size => 5)
+    palette.size.should == 5
+    palette.each do |c|
+      puts c.inspect
+      c.lightness.should == color.lightness
+      [color.hue, (color.hue + 90) % 360, (color.hue + 180) % 360, (color.hue + 270) % 360].include?(c.hue).should be_true
+    end
+  end
 end
