@@ -210,7 +210,6 @@ describe Paleta::Palette do
     palette = Paleta::Palette.generate(:type => :tetrad, :from => color, :size => 5)
     palette.size.should == 5
     palette.each do |c|
-      puts c.inspect
       c.lightness.should == color.lightness
       [color.hue, (color.hue + 90) % 360, (color.hue + 180) % 360, (color.hue + 270) % 360].include?(c.hue).should be_true
     end
