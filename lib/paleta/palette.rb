@@ -112,19 +112,19 @@ module Paleta
       type = opts[:type] || :shades
       size = opts[:size] || 5
       case type
-      when :analogous; self.generate_analogous_palette_from_color(color, size)
-      when :complementary; self.generate_complementary_palette_from_color(color, size)
-      when :triad; self.generate_triad_palette_from_color(color, size)
-      when :monochromatic; self.generate_monochromatic_palette_from_color(color, size)
-      when :shades; self.generate_shades_palette_from_color(color, size)
-      when :random; self.generate_random_palette_from_color(color, size)
+      when :analogous; self.generate_analogous_from_color(color, size)
+      when :complementary; self.generate_complementary_from_color(color, size)
+      when :triad; self.generate_triad_from_color(color, size)
+      when :monochromatic; self.generate_monochromatic_from_color(color, size)
+      when :shades; self.generate_shades_from_color(color, size)
+      when :random; self.generate_random_from_color(color, size)
       else raise(ArgumentError, "Palette type is not defined. Try :analogous, :monochromatic, :shades, or :random")
       end
     end
     
     private
     
-    def self.generate_analogous_palette_from_color(color, n)
+    def self.generate_analogous_from_color(color, n)
       raise(ArgumentError, "Passed argument is not a Color") unless color.is_a?(Color)
       palette = self.new(color)
       step = 20
@@ -143,7 +143,7 @@ module Paleta
       palette.sort! { |a, b| a.hue <=> b.hue }
     end
     
-    def self.generate_complementary_palette_from_color(color, n)
+    def self.generate_complementary_from_color(color, n)
       raise(ArgumentError, "Passed argument is not a Color") unless color.is_a?(Color)
       complement = color.complement
       palette = self.new(color, complement)
@@ -152,7 +152,7 @@ module Paleta
       palette.sort! { |a, b| a.saturation <=> b.saturation }
     end
     
-    def self.generate_triad_palette_from_color(color, n)
+    def self.generate_triad_from_color(color, n)
       raise(ArgumentError, "Passed argument is not a Color") unless color.is_a?(Color)
       color2 = Paleta::Color.new(:hsl, (color.hue + 120) % 360, color.saturation, color.lightness)
       color3 = Paleta::Color.new(:hsl, (color2.hue + 120) % 360, color2.saturation, color2.lightness)
@@ -162,7 +162,7 @@ module Paleta
       palette.sort! { |a, b| a.saturation <=> b.saturation }
     end
     
-    def self.generate_monochromatic_palette_from_color(color, n)
+    def self.generate_monochromatic_from_color(color, n)
       raise(ArgumentError, "Passed argument is not a Color") unless color.is_a?(Color)
       palette = self.new(color)
       step = (100 / n)
@@ -180,7 +180,7 @@ module Paleta
       palette.sort! { |a, b| a.saturation <=> b.saturation }
     end
     
-    def self.generate_shades_palette_from_color(color, n)
+    def self.generate_shades_from_color(color, n)
       raise(ArgumentError, "Passed argument is not a Color") unless color.is_a?(Color)
       palette = self.new(color)
       step = (100 / n)
@@ -198,7 +198,7 @@ module Paleta
       palette.sort! { |a, b| a.lightness <=> b.lightness }
     end
     
-    def self.generate_random_palette_from_color(color = nil, n)
+    def self.generate_random_from_color(color = nil, n)
       palette = color.is_a?(Color) ? self.new(color) : self.new
       r = Random.new(Time.now.sec)
       until palette.size == n
