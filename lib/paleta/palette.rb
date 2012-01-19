@@ -15,13 +15,19 @@ module Paleta
       end
     end
     
-    def <<(color)
-      color.is_a?(Color) ? @colors << color : raise(ArgumentError, "Passed argument is not a Color")
+    def <<(obj)
+      if obj.is_a?(Color)
+        @colors << obj
+      elsif obj.is_a?(Palette)
+        @colors |= obj.colors
+      else
+        raise(ArgumentError, "Passed argument is not a Color")
+      end
       self
     end
     
-    def push(color)
-      self << color
+    def push(obj)
+      self << obj
     end
     
     def pop
@@ -99,7 +105,7 @@ module Paleta
       d1 + d2
     end
     
-    # TODO: complementary, split-complementary, triad, tetrad
+    # TODO: split-complementary, tetrad
     def self.generate(opts = {})
       raise(ArgumentError, "Pass a Color using :from, generate( :from => Color )") if opts.empty?
       color = opts[:from]
@@ -108,6 +114,7 @@ module Paleta
       case type
       when :analogous; self.generate_analogous_palette_from_color(color, size)
       when :complementary; self.generate_complementary_palette_from_color(color, size)
+      when :triad; self.generate_triad_palette_from_color(color, size)
       when :monochromatic; self.generate_monochromatic_palette_from_color(color, size)
       when :shades; self.generate_shades_palette_from_color(color, size)
       when :random; self.generate_random_palette_from_color(color, size)
@@ -140,23 +147,18 @@ module Paleta
       raise(ArgumentError, "Passed argument is not a Color") unless color.is_a?(Color)
       complement = color.complement
       palette = self.new(color, complement)
-      step = ugap = dgap = 100 / n
-      hue = [color.hue, complement.hue]
-      i = j = 0
-      s = color.saturation
-      until palette.size == n        
-        if color.saturation + ugap < 100
-          s = color.saturation + ugap
-          ugap += step
-        else
-          s = color.saturation - dgap
-          dgap += step
-        end if j == 3 || j == 1
-        c = Paleta::Color.new(:hsl, hue[i], s, color.lightness)
-        palette << c if c != color && c != complement
-        i += 1; j += 1; i %= 2; j %= 4
-      end
-      
+      hues = [color.hue, complement.hue]
+      palette << add_monochromatic_in_hues_of_color(palette, hues, color, n - palette.size)
+      palette.sort! { |a, b| a.saturation <=> b.saturation }
+    end
+    
+    def self.generate_triad_palette_from_color(color, n)
+      raise(ArgumentError, "Passed argument is not a Color") unless color.is_a?(Color)
+      color2 = Paleta::Color.new(:hsl, (color.hue + 120) % 360, color.saturation, color.lightness)
+      color3 = Paleta::Color.new(:hsl, (color2.hue + 120) % 360, color2.saturation, color2.lightness)
+      palette = self.new(color, color2, color3)
+      hues = [color.hue, color2.hue, color3.hue]
+      palette << add_monochromatic_in_hues_of_color(palette, hues, color, n - palette.size)
       palette.sort! { |a, b| a.saturation <=> b.saturation }
     end
     
@@ -201,6 +203,28 @@ module Paleta
       r = Random.new(Time.now.sec)
       until palette.size == n
         palette << Paleta::Color.new(r.rand(0..255), r.rand(0..255), r.rand(0..255))
+      end
+      palette
+    end
+    
+    def self.add_monochromatic_in_hues_of_color(palette, hues, color, size)
+      raise(ArgumentError, "First argument is not an Array") unless hues.is_a?(Array) 
+      raise(ArgumentError, "Second argument is not a Color") unless color.is_a?(Color) 
+      step = ugap = dgap = 100 / size
+      i = j = 0
+      s = color.saturation
+      palette = Paleta::Palette.new
+      until palette.size == size    
+        if color.saturation + ugap < 100
+          s = color.saturation + ugap
+          ugap += step
+        else
+          s = color.saturation - dgap
+          dgap += step
+        end if j == 3 || j == 1
+        c = Paleta::Color.new(:hsl, hues[i], s, color.lightness)
+        palette << c unless palette.include?(c)
+        i += 1; j += 1; i %= hues.size; j %= (2 * hues.size)
       end
       palette
     end

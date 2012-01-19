@@ -138,11 +138,11 @@ describe Paleta::Palette do
   it "should generate a new Palette of shades of a single Color" do
     color = Paleta::Color.new(:hex, "ff0000")
     palette = Paleta::Palette.generate(:from => color, :size => 5)
+    palette.size.should == 5
     palette.each do |p|
       p.hue.should == color.hue
       p.saturation.should == color.saturation
     end
-        
     palette[0].lightness.should == 10
     palette[1].lightness.should == 30
     palette[2].lightness.should == 50
@@ -153,6 +153,7 @@ describe Paleta::Palette do
   it "should generate a new Palette of Colors analogous to the seed Color" do
     color = Paleta::Color.new(:hex, "0066cc")
     palette = Paleta::Palette.generate(:type => :analogous, :from => color, :size => 5)
+    palette.size.should == 5
     palette.each do |p|
       p.lightness.should == color.lightness
       p.saturation.should == color.saturation
@@ -167,6 +168,7 @@ describe Paleta::Palette do
   it "should generate a new Palette of Colors monochromatic to the seed Color" do
     color = Paleta::Color.new(:hex, "0066cc")
     palette = Paleta::Palette.generate(:type => :monochromatic, :from => color, :size => 5)
+    palette.size.should == 5
     palette.each do |p|
       p.hue.should == color.hue
       p.lightness.should == color.lightness
@@ -183,12 +185,23 @@ describe Paleta::Palette do
     palette.size.should == 5
   end
   
-  it "should generate a new Palette of Colors complementary to the seed Color" do
+  it "should generate a new complementary Palette from the seed Color" do
     color = Paleta::Color.new(:hex, "0066cc")
     palette = Paleta::Palette.generate(:type => :complementary, :from => color, :size => 5)
+    palette.size.should == 5
     palette.each do |c|
       c.lightness.should == color.lightness
       [color.hue, color.complement.hue].include?(c.hue).should be_true
+    end
+  end
+
+  it "should generate a new triad Palette from the seed Color" do
+    color = Paleta::Color.new(:hex, "0066cc")
+    palette = Paleta::Palette.generate(:type => :triad, :from => color, :size => 5)
+    palette.size.should == 5
+    palette.each do |c|
+      c.lightness.should == color.lightness
+      [color.hue, (color.hue + 120) % 360, (color.hue + 240) % 360].include?(c.hue).should be_true
     end
   end
 end
