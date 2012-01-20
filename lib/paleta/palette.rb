@@ -105,7 +105,6 @@ module Paleta
       d1 + d2
     end
     
-    # TODO: split-complementary
     def self.generate(opts = {})
       raise(ArgumentError, "Pass a Color using :from, generate( :from => Color )") if opts.empty?
       color = opts[:from]
@@ -114,11 +113,12 @@ module Paleta
       case type
       when :analogous; self.generate_analogous_from_color(color, size)
       when :complementary; self.generate_complementary_from_color(color, size)
-      when :triad; self.generate_triad_from_color(color, size)
-      when :tetrad; self.generate_tetrad_from_color(color, size)
       when :monochromatic; self.generate_monochromatic_from_color(color, size)
-      when :shades; self.generate_shades_from_color(color, size)
       when :random; self.generate_random_from_color(color, size)
+      when :shades; self.generate_shades_from_color(color, size)
+      when :split_complement; self.generate_split_complement_from_color(color, size)
+      when :tetrad; self.generate_tetrad_from_color(color, size)
+      when :triad; self.generate_triad_from_color(color, size)
       else raise(ArgumentError, "Palette type is not defined. Try :analogous, :monochromatic, :shades, or :random")
       end
     end
@@ -205,6 +205,15 @@ module Paleta
         end
       end
       palette.sort! { |a, b| a.lightness <=> b.lightness }
+    end
+    
+    def self.generate_split_complement_from_color(color, size)
+      raise(ArgumentError, "Passed argument is not a Color") unless color.is_a?(Color)
+      color2 = Paleta::Color.new(:hsl, (color.hue + 150) % 360, color.saturation, color.lightness)
+      color3 = Paleta::Color.new(:hsl, (color2.hue + 60) % 360, color2.saturation, color2.lightness)
+      palette = self.new(color, color2, color3)
+      palette << add_monochromatic_in_hues_of_color(palette, color, size)
+      palette.sort! { |a, b| a.saturation <=> b.saturation }
     end
     
     def self.generate_random_from_color(color = nil, size)

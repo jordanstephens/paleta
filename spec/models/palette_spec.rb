@@ -214,4 +214,14 @@ describe Paleta::Palette do
       [color.hue, (color.hue + 90) % 360, (color.hue + 180) % 360, (color.hue + 270) % 360].include?(c.hue).should be_true
     end
   end
+  
+  it "should generate a new split-complement Palette from the seed Color" do
+    color = Paleta::Color.new(:hex, "0066cc")
+    palette = Paleta::Palette.generate(:type => :split_complement, :from => color, :size => 5)
+    palette.size.should == 5
+    palette.each do |c|
+      c.lightness.should == color.lightness
+      [color.hue, (color.hue + 150) % 360, (color.hue + 210) % 360].include?(c.hue).should be_true
+    end
+  end
 end
