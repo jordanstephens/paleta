@@ -10,9 +10,7 @@ module Paleta
     def initialize(*args)
       @colors = []
       colors = (args.length == 1 && args[0].is_a?(Array)) ? args[0] : args
-      colors.each do |color|
-        self << color
-      end
+      colors.each { |color| self << color }
     end
     
     def <<(obj)
@@ -65,21 +63,15 @@ module Paleta
     end
     
     def lighten!(percent = 5)
-      @colors.each do |color|
-        color.lighten!(percent)
-      end
+      @colors.each { |color| color.lighten!(percent) }
     end
     
     def darken!(percent = 5)
-      @colors.each do |color|
-        color.darken!(percent)
-      end
+      @colors.each { |color| color.darken!(percent) }
     end
     
     def invert!
-      @colors.each do |color|
-        color.invert!
-      end
+      @colors.each { |color| color.invert! }
     end
     
     def similarity(palette)
