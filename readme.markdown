@@ -126,10 +126,6 @@ Palettes can calculate their similarity to other Palettes by using the `similari
 #### Generating Palettes
 
 Palettes can be generated from a "seed" Color by using the `generate` method.
-
-**Generate a random Palette**
-
-	palette = Paleta::Palette.generate(:type => :random, :size = 5)
 	
 **Generate a Palette of shades from a Color**
 
@@ -165,6 +161,10 @@ Palettes can be generated from a "seed" Color by using the `generate` method.
 
     color = Paleta::Color.new(:hex, "dd5533")
     palette = Paleta::Palette.generate(:type => :tetrad, :from => color, :size => 5)
+	
+**Generate a random Palette**
+
+	palette = Paleta::Palette.generate(:type => :random, :size => 5)
 
 ***
 
