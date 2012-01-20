@@ -35,7 +35,7 @@ Colors can be created using RGB or HSL components, or by using a HEX value by pa
     # creating a Color with no flag defaults to RGB components
 	color = Paleta::Color.new(94, 161, 235)
 	
-Individual component values can be accessed by name.
+Individual component values can be accessed by name
 
 	color.red # => 94
 	color.green # => 161
@@ -47,7 +47,7 @@ Individual component values can be accessed by name.
 	
 #### Manipulating Colors
 
-Colors can be lightened or darkened by a percentage.
+Colors can be lightened or darkened by a percentage
 
 	color.lighten!(10) 
 	color.darken!(30) 
@@ -56,7 +56,7 @@ Colors can be desaturated
 
 	color.desaturate!
 	
-Colors can be turned into their complement Colors.
+Colors can be turned into their complement Colors
 
 	color.complement!
 
@@ -136,15 +136,35 @@ Palettes can be generated from a "seed" Color by using the `generate` method.
 	color = Paleta::Color.new(:hex, "ff0000")
 	palette = Paleta::Palette.generate(:type => :shades, :from => color, :size => 5)
 	
-**Generate a Palette of Colors analogous to the seed Color**
+**Generate a Palette of analogous Colors from a Color**
 
     color = Paleta::Color.new(:hex, "0066cc")
     palette = Paleta::Palette.generate(:type => :analogous, :from => color, :size => 5)
 	
-**Generate a Palette of Colors monochromatic to the seed Color**
+**Generate a Palette of monochromatic Colors from a Color**
 
     color = Paleta::Color.new(:hex, "336699")
     palette = Paleta::Palette.generate(:type => :monochromatic, :from => color, :size => 5)
+	
+**Generate a Palette of complementary Colors from a Color**
+
+    color = Paleta::Color.new(:hex, "0000ff")
+    palette = Paleta::Palette.generate(:type => :complementary, :from => color, :size => 5)
+
+**Generate a Palette of split-complement Colors from a Color**
+
+    color = Paleta::Color.new(:hex, "006699")
+    palette = Paleta::Palette.generate(:type => :split_complement, :from => color, :size => 5)
+
+**Generate a Palette of triad Colors from a Color**
+
+    color = Paleta::Color.new(:hex, "006699")
+    palette = Paleta::Palette.generate(:type => :triad, :from => color, :size => 5)
+
+**Generate a Palette of tetrad Colors from a Color**
+
+    color = Paleta::Color.new(:hex, "dd5533")
+    palette = Paleta::Palette.generate(:type => :tetrad, :from => color, :size => 5)
 
 ***
 
