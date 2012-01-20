@@ -148,8 +148,7 @@ module Paleta
       raise(ArgumentError, "Passed argument is not a Color") unless color.is_a?(Color)
       complement = color.complement
       palette = self.new(color, complement)
-      palette << add_monochromatic_in_hues_of_color(palette, color, size)
-      palette.sort! { |a, b| a.saturation <=> b.saturation }
+      add_monochromatic_in_hues_of_color(palette, color, size)
     end
     
     def self.generate_triad_from_color(color, size)
@@ -157,8 +156,7 @@ module Paleta
       color2 = Paleta::Color.new(:hsl, (color.hue + 120) % 360, color.saturation, color.lightness)
       color3 = Paleta::Color.new(:hsl, (color2.hue + 120) % 360, color2.saturation, color2.lightness)
       palette = self.new(color, color2, color3)
-      palette << add_monochromatic_in_hues_of_color(palette, color, size)
-      palette.sort! { |a, b| a.saturation <=> b.saturation }
+      add_monochromatic_in_hues_of_color(palette, color, size)
     end
     
     def self.generate_tetrad_from_color(color, size)
@@ -167,8 +165,7 @@ module Paleta
       color3 = Paleta::Color.new(:hsl, (color2.hue + 90) % 360, color2.saturation, color2.lightness)
       color4 = Paleta::Color.new(:hsl, (color3.hue + 90) % 360, color3.saturation, color3.lightness)
       palette = self.new(color, color2, color3, color4)
-      palette << add_monochromatic_in_hues_of_color(palette, color, size)
-      palette.sort! { |a, b| a.saturation <=> b.saturation }
+      add_monochromatic_in_hues_of_color(palette, color, size)
     end
     
     def self.generate_monochromatic_from_color(color, size)
@@ -212,8 +209,7 @@ module Paleta
       color2 = Paleta::Color.new(:hsl, (color.hue + 150) % 360, color.saturation, color.lightness)
       color3 = Paleta::Color.new(:hsl, (color2.hue + 60) % 360, color2.saturation, color2.lightness)
       palette = self.new(color, color2, color3)
-      palette << add_monochromatic_in_hues_of_color(palette, color, size)
-      palette.sort! { |a, b| a.saturation <=> b.saturation }
+      add_monochromatic_in_hues_of_color(palette, color, size)
     end
     
     def self.generate_random_from_color(color = nil, size)
@@ -243,7 +239,7 @@ module Paleta
         palette << new_color unless palette.include?(new_color)
         i += 1; j += 1; i %= hues.size; j %= (2 * hues.size)
       end
-      palette
+      palette.sort! { |a, b| a.saturation <=> b.saturation }
     end
     
     def fit
