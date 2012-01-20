@@ -9,15 +9,9 @@ module Paleta
     def initialize(*args)
       
       if args.length == 1 && args[0].is_a?(Color)
-        # TODO: refactor this, find out how to call a method name by the value of a variable
-        # something like args[0].instance_variables.each { |k, v| self.(k) = v }
-        @red = args[0].red
-        @green = args[0].green
-        @blue = args[0].blue
-        @hue = args[0].hue
-        @saturation = args[0].saturation
-        @lightness = args[0].lightness
-        @hex = args[0].hex
+        args[0].instance_variables.each do |key|
+          self.send("#{key[1..key.length]}=".to_sym, args[0].send("#{key[1..key.length]}"))
+        end
       elsif args.length == 2 && args[0] == :hex && args[1].is_a?(String)
         # example: new(:hex, "336699")
         hex_init(args[1])

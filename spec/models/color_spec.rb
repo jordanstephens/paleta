@@ -203,13 +203,13 @@ describe Paleta::Color do
   it "should become its complement" do
     color = Paleta::Color.new(:hsl, 90, 50, 50)
     color.complement!
-    color.hue.should == 270
+    color.hue.to_i.should == 270
   end
   
   it "should return its complement Color" do
     color = Paleta::Color.new(:hsl, 90, 50, 50)
     complement = color.complement
-    complement.hue.should == 270
+    complement.hue.to_i.should == 270
   end
   
   it "should calculate its similarity to another Color" do
