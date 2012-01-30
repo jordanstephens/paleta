@@ -1,11 +1,40 @@
 require 'paleta/core_ext/math'
 
 module Paleta
+  # Represents a color
   class Color
     include Math
     
     attr_reader :red, :green, :blue, :hue, :saturation, :lightness, :hex
     
+    # Initailize a Color
+    #
+    # @overload initialize()
+    #   Initialize a Color to black
+    #
+    # @overload initialize(color)
+    #   Initialize a Color from a Color
+    #   @param [Color] color a color to copy
+    #
+    # @overload initialize(model, value)
+    #   Initialize a Color with a hex value
+    #   @param [Symbol] model the color model, should be :hex in this case
+    #   @param [String] value a 6 character hexadecimal string
+    #
+    # @overload initialize(model, value, value, value)
+    #   Initialize a Color with HSL or RGB component values
+    #   @param [Symbol] model the color model, should be :hsl or :rgb
+    #   @param [Number] (red,hue) the red or hue component value, depending on the value of model
+    #   @param [Number] (green,saturation) the green or saturation component value
+    #   @param [Number] (blue,lightness) the blue or lightness component value
+    #
+    # @overload initialize(value, value, value)
+    #   Initialize a Color with RGB component values
+    #   @param [Number] red the red component value
+    #   @param [Number] green the green component value
+    #   @param [Number] blue the blue component value
+    #
+    # @return [Color] A new instance of Color
     def initialize(*args)
       
       if args.length == 1 && args[0].is_a?(Color)
