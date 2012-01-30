@@ -100,6 +100,7 @@ module Paleta
     # @return [Palette] self
     def lighten!(percentage = 5)
       @colors.each { |color| color.lighten!(percentage) }
+      self
     end
     
     # Lighen each {Color} in the receiver by a percentage
@@ -107,12 +108,14 @@ module Paleta
     # @return [Palette] self
     def darken!(percentage = 5)
       @colors.each { |color| color.darken!(percentage) }
+      self
     end
     
     # Invert each {Color} in the receiver by a percentage
     # @return [Palette] self
     def invert!
       @colors.each { |color| color.invert! }
+      self
     end
     
     # Calculate the similarity between the receiver and another {Palette}
