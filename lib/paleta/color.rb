@@ -60,22 +60,6 @@ module Paleta
       end
     end
     
-    def rgb_init(red = 0, green = 0, blue = 0)
-      self.red = red
-      self.green = green
-      self.blue = blue
-    end
-    
-    def hsl_init(hue = 0, saturation = 0, lightness = 0)
-      self.hue = hue
-      self.saturation = saturation
-      self.lightness = lightness
-    end
-    
-    def hex_init(val = "000000")
-      self.hex = val
-    end
-    
     def red=(val)
       @red = range_validator(val, 0..255)
       update_hsl
@@ -199,6 +183,22 @@ module Paleta
     end
     
     private
+    
+    def rgb_init(red = 0, green = 0, blue = 0)
+      self.red = red
+      self.green = green
+      self.blue = blue
+    end
+    
+    def hsl_init(hue = 0, saturation = 0, lightness = 0)
+      self.hue = hue
+      self.saturation = saturation
+      self.lightness = lightness
+    end
+    
+    def hex_init(val = "000000")
+      self.hex = val
+    end
     
     def update_hsl
       r = @red / 255.0 rescue 0.0
