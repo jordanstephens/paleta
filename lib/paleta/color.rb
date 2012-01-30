@@ -7,34 +7,34 @@ module Paleta
     
     attr_reader :red, :green, :blue, :hue, :saturation, :lightness, :hex
     
-    # Initailize a Color
+    # Initailize a {Color}
     #
     # @overload initialize()
-    #   Initialize a Color to black
+    #   Initialize a {Color} to black
     #
     # @overload initialize(color)
-    #   Initialize a Color from a Color
+    #   Initialize a {Color} from a {Color}
     #   @param [Color] color a color to copy
     #
     # @overload initialize(model, value)
-    #   Initialize a Color with a hex value
+    #   Initialize a {Color} with a hex value
     #   @param [Symbol] model the color model, should be :hex in this case
     #   @param [String] value a 6 character hexadecimal string
     #
     # @overload initialize(model, value, value, value)
-    #   Initialize a Color with HSL or RGB component values
+    #   Initialize a {Color} with HSL or RGB component values
     #   @param [Symbol] model the color model, should be :hsl or :rgb
     #   @param [Number] (red,hue) the red or hue component value, depending on the value of model
     #   @param [Number] (green,saturation) the green or saturation component value
     #   @param [Number] (blue,lightness) the blue or lightness component value
     #
     # @overload initialize(value, value, value)
-    #   Initialize a Color with RGB component values
+    #   Initialize a {Color} with RGB component values
     #   @param [Number] red the red component value
     #   @param [Number] green the green component value
     #   @param [Number] blue the blue component value
     #
-    # @return [Color] A new instance of Color
+    # @return [Color] A new instance of {Color}
     def initialize(*args)
       
       if args.length == 1 && args[0].is_a?(Color)
@@ -105,44 +105,63 @@ module Paleta
       update_hsl
     end
     
+    # Determine the equality of the receiver and another {Color}
+    # @param [Color] color color to compare
+    # @return [Boolean]
     def ==(color)
       color.is_a?(Color) ? (self.hex == color.hex) : false
     end
     
-    def lighten(percent = 5)
+    # Create a copy of the receiver and lighten it by a percentage
+    # @param [Number] percentage percentage by which to lighten the {Color}
+    # @return [Color] a lightened copy of the receiver
+    def lighten(percentage = 5)
       copy = self.class.new(self)
-      copy.lighten!(percent)
+      copy.lighten!(percentage)
       copy
     end
     
-    def lighten!(percent = 5)
-      @lightness += percent
+    # Lighten the receiver by a percentage
+    # @param [Number] percentage percentage by which to lighten the {Color}
+    # @return [Color] self
+    def lighten!(percentage = 5)
+      @lightness += percentage
       @lightness = 100 if @lightness > 100
       update_rgb
       update_hex
       self
     end
     
-    def darken(percent = 5)
+    # Create a copy of the receiver and darken it by a percentage
+    # @param [Number] percentage percentage by which to darken the {Color}
+    # @return [Color] a darkened copy of the receiver
+    def darken(percentage = 5)
       copy = self.class.new(self)
-      copy.darken!(percent)
+      copy.darken!(percentage)
       copy
     end
     
-    def darken!(percent = 5)
-      @lightness -= percent
+    # Darken the receiver by a percentage
+    # @param [Number] percentage percentage by which to darken the {Color}
+    # @return [Color] self
+    def darken!(percentage = 5)
+      @lightness -= percentage
       @lightness = 0 if @lightness < 0
       update_rgb
       update_hex
       self
     end
     
+    # Create a copy of the receiver and invert it
+    # @return [Color] an inverted copy of the receiver
     def invert
       copy = self.class.new(self)
       copy.invert!
       copy
     end
     
+    # Invert the receiver
+    # @return [Color] self
     def invert!
       @red = 255 - @red
       @green = 255 - @green
@@ -152,12 +171,16 @@ module Paleta
       self
     end
     
+    # Create a copy of the receiver and desaturate it
+    # @return [Color] a desaturated copy of the receiver
     def desaturate
       copy = self.class.new(self)
       copy.desaturate!
       copy
     end
-    
+
+    # Desaturate the receiver
+    # @return [Color] self
     def desaturate!
       @saturation = 0
       update_rgb
@@ -165,12 +188,16 @@ module Paleta
       self
     end
     
+    # Create a new {Color} that is the complement of the receiver
+    # @return [Color] a desaturated copy of the receiver
     def complement
       copy = self.class.new(self)
       copy.complement!
       copy
     end
     
+    # Turn the receiver into it's complement
+    # @return [Color] self
     def complement!
       @hue = (@hue + 180) % 360
       update_rgb
@@ -178,6 +205,9 @@ module Paleta
       self
     end
     
+    # Calculate the similarity between the receiver and another {Color}
+    # @param [Color] color color to calculate the similarity to
+    # @return [Number] a value in [0..1] with 0 being identical and 1 being as dissimilar as possible
     def similarity(color)
       distance({ :r => @red, :g => @green, :b => @blue}, { :r => color.red, :g => color.green, :b => color.blue}) / sqrt(3 * (255 ** 2))
     end
