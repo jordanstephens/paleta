@@ -5,3 +5,6 @@ Guardfile
 *.gem
 .bundle
 tmp
+.yardoc
+_yardoc
+doc/
