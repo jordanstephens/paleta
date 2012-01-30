@@ -1,18 +1,29 @@
 require 'paleta/core_ext/math'
 
 module Paleta
+  # Represents a palette, a collection of {Color}s
   class Palette
     include Math
     include Enumerable
     
     attr_accessor :colors
     
+    # Initialize a {Palette} from a list of {Color}s
+    # @param [Array] colors a list of {Color}s to include in the {Palette}
+    # @return [Palette] A new instance of {Palette}
     def initialize(*args)
       @colors = []
       colors = (args.length == 1 && args[0].is_a?(Array)) ? args[0] : args
       colors.each { |color| self << color }
     end
     
+    # Add a {Color} to the {Palette}
+    # @overload <<(color)
+    #   @param [Color] color a {Color} to add to the receiver
+    # @overload <<(palette)
+    #   @param [Palette] palette a {Palette} to merge with the receiver
+    # @return [Palette] self
+    # @see Paleta::Palette.push(obj)
     def <<(obj)
       if obj.is_a?(Color)
         @colors << obj
@@ -24,61 +35,94 @@ module Paleta
       self
     end
     
+    # Add a {Color} to the {Palette}
+    # @overload push(color)
+    #   @param [Color] color a {Color} to add to the receiver
+    # @overload push(palette)
+    #   @param [Palette] palette a {Palette} to merge with the receiver
+    # @return [Palette] self
+    # @see Paleta::Palette.<<(obj)
     def push(obj)
       self << obj
     end
     
+    # Remove the most recently added {Color} from the receiver
     def pop
       @colors.pop
     end
     
-    def delete_at(i = 0)
-      @colors.delete_at(i)
+    # Remove a {Color} from the receiver by index
+    # @param [Number] index the index at which to remove a {Color}
+    def delete_at(index = 0)
+      @colors.delete_at(index)
     end
     
-    def [](i)
-      @colors[i]
+    # Access a {Color} in the receiver by index
+    # @param [Number] index the index at which to access a {Color}
+    def [](index)
+      @colors[index]
     end
     
+    # The number of {Color}s in the {Palette}
+    # @return [Number] the number of {Color}s in the receiver
     def size
       @colors.size
     end
     
+    # Iterate through each {Color} in the {Palette}
     def each
       @colors.each { |c| yield c }
     end
     
-    def sort &blk
-      @colors.sort &blk
+    # Create a new instance of {Palette} that is a sorted copy of the receiver
+    # @return [Palette] a new instance of {Palette}
+    def sort(&blk)
+      @colors.sort(&blk)
       Paleta::Palette.new(@colors)
     end
     
-    def sort! &blk
-      @colors.sort! &blk
+    # Sort the {Color}s in the receiver
+    # return [Palette] self
+    def sort!(&blk)
+      @colors.sort!(&blk)
       self
     end
     
+    # Test if a {Color} exists in the receiver
+    # @param [Color] color color to test for inclusion in the {Palette}
+    # @return [Boolean]
     def include?(color)
       @colors.include?(color)
     end
     
-    def lighten!(percent = 5)
-      @colors.each { |color| color.lighten!(percent) }
+    # Lighen each {Color} in the receiver by a percentage
+    # @param [Number] percentage percentage by which to lighten each {Color} in the receiver
+    # @return [Palette] self
+    def lighten!(percentage = 5)
+      @colors.each { |color| color.lighten!(percentage) }
     end
     
-    def darken!(percent = 5)
-      @colors.each { |color| color.darken!(percent) }
+    # Lighen each {Color} in the receiver by a percentage
+    # @param [Number] percentage percentage by which to lighten each {Color} in the receiver
+    # @return [Palette] self
+    def darken!(percentage = 5)
+      @colors.each { |color| color.darken!(percentage) }
     end
     
+    # Invert each {Color} in the receiver by a percentage
+    # @return [Palette] self
     def invert!
       @colors.each { |color| color.invert! }
     end
     
+    # Calculate the similarity between the receiver and another {Palette}
+    # @param [Palette] palette palette to calculate the similarity to
+    # @return [Number] a value in [0..1] with 0 being identical and 1 being as dissimilar as possible
     def similarity(palette)
       r, a, b = [], [], []
       (0..1).each { |i| a[i], b[i] = {}, {} }
       
-      # r[i] is the Math::MultipleRegression of the Palette in RGB space
+      # r[i] is a hash of the multiple regression of the Palette in RGB space
       r[0] = fit
       r[1] = palette.fit
             
@@ -97,6 +141,12 @@ module Paleta
       d1 + d2
     end
     
+    # Generate a {Palette} from a seed {Color}
+    # @param [Hash] opts the options with which to generate a new {Palette}
+    # @option opts [Symbol] :type the type of palette to generate
+    # @option opts [Color] :from the {Color} from which to generate the {Palette}
+    # @option opts [Number] :size the number of {Color}s to generate for the {Palette}
+    # @return [Palette] A new instance of {Palette}
     def self.generate(opts = {})
       raise(ArgumentError, "Pass a Color using :from, generate( :from => Color )") if opts.empty?
       color = opts[:from]
