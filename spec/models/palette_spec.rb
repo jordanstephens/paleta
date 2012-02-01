@@ -226,6 +226,7 @@ describe Paleta::Palette do
   end
   
   it "should generate a Palette from an image" do
-    palette = Paleta::Palette.generate(:from => :image, :image => "/path/to/image")
+    path = File.join(File.dirname(__FILE__), '..', 'images/test.jpg')
+    palette = Paleta::Palette.generate(:from => :image, :image => path)
   end
 end

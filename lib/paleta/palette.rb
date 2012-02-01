@@ -186,7 +186,16 @@ module Paleta
     private
     
     def self.generate_from_image(path, size)
-      image = Magick::ImageList.new(path)
+      begin
+        image = Magick::ImageList.new(path)
+        quantized_image = image.quantize(16, Magick::RGBColorspace)
+        colors = quantized_image.color_histogram.sort { |a, b| b[1] <=> a[1] }.map do |color|          
+          Paleta::Color.new(color[0].red / 255, color[0].green / 255, color[0].blue / 255)
+        end
+        return Paleta::Palette.new(colors)
+      rescue Magick::ImageMagickError
+        raise "Invalid image at " << path
+      end
     end
     
     def self.generate_analogous_from_color(color, size)
