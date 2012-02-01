@@ -233,5 +233,6 @@ describe Paleta::Palette do
     path = File.join(File.dirname(__FILE__), '..', 'images/test.jpg')
     size = 5
     palette = Paleta::Palette.generate(:from => :image, :image => path, :size => size)
+    palette.size.should == size
   end
 end

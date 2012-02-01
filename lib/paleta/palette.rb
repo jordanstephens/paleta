@@ -190,7 +190,7 @@ module Paleta
         image = Magick::ImageList.new(path)
         # quantize image to the nearest power of 2 greater the desired palette size
         quantized_image = image.quantize((Math.sqrt(size).ceil ** 2), Magick::RGBColorspace)
-        colors = quantized_image.color_histogram.sort { |a, b| b[1] <=> a[1] }.map do |color|          
+        colors = quantized_image.color_histogram.sort { |a, b| b[1] <=> a[1] }[0..(size - 1)].map do |color|          
           Paleta::Color.new(color[0].red / 255, color[0].green / 255, color[0].blue / 255)
         end
         return Paleta::Palette.new(colors)
@@ -204,7 +204,7 @@ module Paleta
       palette = self.new(color)
       step = 20
       below = (size / 2)
-      above = (size % 2 == 0) ? (size / 2) - 1: (size / 2)
+      above = (size % 2 == 0) ? (size / 2) - 1 : (size / 2)
       below.times do |i|
         hue = color.hue - ((i + 1) * step)
         hue += 360 if hue < 0
