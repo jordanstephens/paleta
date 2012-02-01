@@ -225,6 +225,10 @@ describe Paleta::Palette do
     end
   end
   
+  it "should raise an error when generating a Palette from an invalid image" do
+    expect{ Paleta::Palette.generate(:from => :image, :image => "/no/image.here") }.to raise_error(RuntimeError)
+  end
+  
   it "should generate a Palette from an image" do
     path = File.join(File.dirname(__FILE__), '..', 'images/test.jpg')
     palette = Paleta::Palette.generate(:from => :image, :image => path)
