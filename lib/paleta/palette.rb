@@ -1,9 +1,11 @@
 require 'paleta/core_ext/math'
+require 'RMagick'
 
 module Paleta
   # Represents a palette, a collection of {Color}s
   class Palette
     include Math
+    include Magick
     include Enumerable
     
     attr_accessor :colors
