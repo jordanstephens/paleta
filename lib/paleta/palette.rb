@@ -1,9 +1,11 @@
 require 'paleta/core_ext/math'
+require 'RMagick'
 
 module Paleta
   # Represents a palette, a collection of {Color}s
   class Palette
     include Math
+    include Magick
     include Enumerable
     
     attr_accessor :colors
@@ -147,19 +149,35 @@ module Paleta
     # Generate a {Palette} from a seed {Color}
     # @param [Hash] opts the options with which to generate a new {Palette}
     # @option opts [Symbol] :type the type of palette to generate
-    # @option opts [Color] :from the {Color} from which to generate the {Palette}
+    # @option opts [Symbol] :from how to generate the {Palette}
+    # @option opts [Color] :color if :from == :color, pass a {Color} object as :color
+    # @option opts [String] :image if :from == :image, pass the path to an image as :image
     # @option opts [Number] :size the number of {Color}s to generate for the {Palette}
     # @return [Palette] A new instance of {Palette}
     def self.generate(opts = {})
-      raise(ArgumentError, "Pass a Color using :from, generate( :from => Color )") if opts.empty?
-      color = opts[:from]
-      type = opts[:type] || :shades
+      
       size = opts[:size] || 5
+      
+      if !opts[:type].nil? && opts[:type].to_sym == :random
+        return self.generate_random_from_color(opts[:color], size)
+      end
+      
+      unless (opts[:from].to_sym == :color && !opts[:color].nil?) || (opts[:from].to_sym == :image && !opts[:image].nil?)
+        return raise(ArgumentError, 'You must pass :from and it must be either :color or :image, then you must pass :image => "/path/to/img" or :color => color')
+      end
+      
+      if opts[:from].to_sym == :image
+        path = opts[:image]
+        return self.generate_from_image(path, size)
+      end
+      
+      color = opts[:color]
+      type = opts[:type] || :shades
+      
       case type
       when :analogous; self.generate_analogous_from_color(color, size)
       when :complementary; self.generate_complementary_from_color(color, size)
       when :monochromatic; self.generate_monochromatic_from_color(color, size)
-      when :random; self.generate_random_from_color(color, size)
       when :shades; self.generate_shades_from_color(color, size)
       when :split_complement; self.generate_split_complement_from_color(color, size)
       when :tetrad; self.generate_tetrad_from_color(color, size)
@@ -170,12 +188,26 @@ module Paleta
     
     private
     
+    def self.generate_from_image(path, size)
+      begin
+        image = Magick::ImageList.new(path)
+        # quantize image to the nearest power of 2 greater the desired palette size
+        quantized_image = image.quantize((Math.sqrt(size).ceil ** 2), Magick::RGBColorspace)
+        colors = quantized_image.color_histogram.sort { |a, b| b[1] <=> a[1] }[0..(size - 1)].map do |color|          
+          Paleta::Color.new(color[0].red / 255, color[0].green / 255, color[0].blue / 255)
+        end
+        return Paleta::Palette.new(colors)
+      rescue Magick::ImageMagickError
+        raise "Invalid image at " << path
+      end
+    end
+    
     def self.generate_analogous_from_color(color, size)
       raise(ArgumentError, "Passed argument is not a Color") unless color.is_a?(Color)
       palette = self.new(color)
       step = 20
       below = (size / 2)
-      above = (size % 2 == 0) ? (size / 2) - 1: (size / 2)
+      above = (size % 2 == 0) ? (size / 2) - 1 : (size / 2)
       below.times do |i|
         hue = color.hue - ((i + 1) * step)
         hue += 360 if hue < 0
