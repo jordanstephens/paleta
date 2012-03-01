@@ -11,10 +11,19 @@ module Paleta
     end
     
     module ClassMethods
-      def generate_from_image(path, size = 8)
+      
+      # Generate a {Palette} from a seed image
+      # @param [Hash] opts the options with which to generate a new {Palette}
+      # @option opts [String] :image a path to an image to use as a seed
+      # @option opts [Number] :size the number of {Color}s to generate for the {Palette}
+      # @return [Palette] A new instance of {Palette}
+      def generate_from_image(opts = {})
         include Magick
+        
+        size = opts[:size] || 5
+        
         begin
-          image = Magick::ImageList.new(path)
+          image = Magick::ImageList.new(opts[:path])
           # quantize image to the nearest power of 2 greater the desired palette size
           quantized_image = image.quantize((Math.sqrt(size).ceil ** 2), Magick::RGBColorspace)
           colors = quantized_image.color_histogram.sort { |a, b| b[1] <=> a[1] }[0..(size - 1)].map do |color|          
@@ -22,7 +31,7 @@ module Paleta
           end
           return Paleta::Palette.new(colors)
         rescue Magick::ImageMagickError
-          raise "Invalid image at " << path
+          raise "Invalid image at " << opts[:path]
         end
       end
     end
