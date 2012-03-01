@@ -17,13 +17,11 @@ module Paleta
       # @option opts [String] :image a path to an image to use as a seed
       # @option opts [Number] :size the number of {Color}s to generate for the {Palette}
       # @return [Palette] A new instance of {Palette}
-      def generate_from_image(opts = {})
+      def generate_from_image(path, size = 5)
         include Magick
-        
-        size = opts[:size] || 5
-        
         begin
-          image = Magick::ImageList.new(opts[:path])
+          image = Magick::ImageList.new(path)
+          
           # quantize image to the nearest power of 2 greater the desired palette size
           quantized_image = image.quantize((Math.sqrt(size).ceil ** 2), Magick::RGBColorspace)
           colors = quantized_image.color_histogram.sort { |a, b| b[1] <=> a[1] }[0..(size - 1)].map do |color|          
@@ -31,7 +29,7 @@ module Paleta
           end
           return Paleta::Palette.new(colors)
         rescue Magick::ImageMagickError
-          raise "Invalid image at " << opts[:path]
+          raise "Invalid image at " << path
         end
       end
     end
@@ -184,15 +182,26 @@ module Paleta
     # Generate a {Palette} from a seed {Color}
     # @param [Hash] opts the options with which to generate a new {Palette}
     # @option opts [Symbol] :type the type of palette to generate
-    # @option opts [Color] :color a {Color} object to use as the seed
+    # @option opts [Symbol] :from how to generate the {Palette}
+    # @option opts [Color] :color if :from == :color, pass a {Color} object as :color
+    # @option opts [String] :image if :from == :image, pass the path to an image as :image
     # @option opts [Number] :size the number of {Color}s to generate for the {Palette}
     # @return [Palette] A new instance of {Palette}
-    def self.generate_from_color(opts = {})
+    def self.generate(opts = {})
       
       size = opts[:size] || 5
       
       if !opts[:type].nil? && opts[:type].to_sym == :random
         return self.generate_random_from_color(opts[:color], size)
+      end
+      
+      unless (opts[:from].to_sym == :color && !opts[:color].nil?) || (opts[:from].to_sym == :image && !opts[:image].nil?)
+        return raise(ArgumentError, 'You must pass :from and it must be either :color or :image, then you must pass :image => "/path/to/img" or :color => color')
+      end
+                  
+      if opts[:from].to_sym == :image
+        path = opts[:image]
+        return self.generate_from_image(path, size)
       end
       
       color = opts[:color]
