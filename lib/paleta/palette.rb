@@ -175,21 +175,15 @@ module Paleta
     # Generate a {Palette} from a seed {Color}
     # @param [Hash] opts the options with which to generate a new {Palette}
     # @option opts [Symbol] :type the type of palette to generate
-    # @option opts [Symbol] :from how to generate the {Palette}
-    # @option opts [Color] :color if :from == :color, pass a {Color} object as :color
-    # @option opts [String] :image if :from == :image, pass the path to an image as :image
+    # @option opts [Color] :color a {Color} object to use as the seed
     # @option opts [Number] :size the number of {Color}s to generate for the {Palette}
     # @return [Palette] A new instance of {Palette}
-    def self.generate(opts = {})
+    def self.generate_from_color(opts = {})
       
       size = opts[:size] || 5
       
       if !opts[:type].nil? && opts[:type].to_sym == :random
         return self.generate_random_from_color(opts[:color], size)
-      end
-      
-      unless (opts[:from].to_sym == :color && !opts[:color].nil?) || (opts[:from].to_sym == :image && !opts[:image].nil?)
-        return raise(ArgumentError, 'You must pass :from and it must be either :color or :image, then you must pass :image => "/path/to/img" or :color => color')
       end
       
       color = opts[:color]

@@ -137,7 +137,7 @@ describe Paleta::Palette do
   
   it "should generate a new Palette of shades of a single Color" do
     color = Paleta::Color.new(:hex, "ff0000")
-    palette = Paleta::Palette.generate(:from => :color, :color => color, :size => 5)
+    palette = Paleta::Palette.generate_from_color(:color => color, :size => 5)
     palette.size.should == 5
     palette.each do |p|
       p.hue.should == color.hue
@@ -152,7 +152,7 @@ describe Paleta::Palette do
   
   it "should generate a new Palette of Colors analogous to the seed Color" do
     color = Paleta::Color.new(:hex, "0066cc")
-    palette = Paleta::Palette.generate(:type => :analogous, :from => :color, :color => color, :size => 5)
+    palette = Paleta::Palette.generate_from_color(:type => :analogous, :color => color, :size => 5)
     palette.size.should == 5
     palette.each do |p|
       p.lightness.should == color.lightness
@@ -167,7 +167,7 @@ describe Paleta::Palette do
   
   it "should generate a new Palette of Colors monochromatic to the seed Color" do
     color = Paleta::Color.new(:hex, "0066cc")
-    palette = Paleta::Palette.generate(:type => :monochromatic, :from => :color, :color => color, :size => 5)
+    palette = Paleta::Palette.generate_from_color(:type => :monochromatic, :color => color, :size => 5)
     palette.size.should == 5
     palette.each do |p|
       p.hue.should == color.hue
@@ -181,13 +181,13 @@ describe Paleta::Palette do
   end
   
   it "should generate a new Palette of random Colors" do
-    palette = Paleta::Palette.generate(:type => :random, :size => 5)
+    palette = Paleta::Palette.generate_from_color(:type => :random, :size => 5)
     palette.size.should == 5
   end
   
   it "should generate a new complementary Palette from the seed Color" do
     color = Paleta::Color.new(:hex, "0066cc")
-    palette = Paleta::Palette.generate(:type => :complementary, :from => :color, :color => color, :size => 5)
+    palette = Paleta::Palette.generate_from_color(:type => :complementary, :color => color, :size => 5)
     palette.size.should == 5
     palette.each do |c|
       c.lightness.should == color.lightness
@@ -197,7 +197,7 @@ describe Paleta::Palette do
 
   it "should generate a new triad Palette from the seed Color" do
     color = Paleta::Color.new(:hex, "0066cc")
-    palette = Paleta::Palette.generate(:type => :triad, :from => :color, :color => color, :size => 5)
+    palette = Paleta::Palette.generate_from_color(:type => :triad, :color => color, :size => 5)
     palette.size.should == 5
     palette.each do |c|
       c.lightness.should == color.lightness
@@ -207,7 +207,7 @@ describe Paleta::Palette do
 
   it "should generate a new tetrad Palette from the seed Color" do
     color = Paleta::Color.new(:hex, "0066cc")
-    palette = Paleta::Palette.generate(:type => :tetrad, :from => :color, :color => color, :size => 5)
+    palette = Paleta::Palette.generate_from_color(:type => :tetrad, :color => color, :size => 5)
     palette.size.should == 5
     palette.each do |c|
       c.lightness.should == color.lightness
@@ -217,7 +217,7 @@ describe Paleta::Palette do
   
   it "should generate a new split-complement Palette from the seed Color" do
     color = Paleta::Color.new(:hex, "0066cc")
-    palette = Paleta::Palette.generate(:type => :split_complement, :from => :color, :color => color, :size => 5)
+    palette = Paleta::Palette.generate_from_color(:type => :split_complement, :color => color, :size => 5)
     palette.size.should == 5
     palette.each do |c|
       c.lightness.should == color.lightness
