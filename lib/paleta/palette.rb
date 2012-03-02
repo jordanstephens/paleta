@@ -7,16 +7,10 @@ module Paleta
       require 'RMagick'
       klass.extend(ClassMethods)
     rescue LoadError
-      puts "You must install RMagick to use Palette.generate_from_image"
+      puts "You must install RMagick to use Palette.generate(:from => :image, ...)"
     end
     
     module ClassMethods
-      
-      # Generate a {Palette} from a seed image
-      # @param [Hash] opts the options with which to generate a new {Palette}
-      # @option opts [String] :image a path to an image to use as a seed
-      # @option opts [Number] :size the number of {Color}s to generate for the {Palette}
-      # @return [Palette] A new instance of {Palette}
       def generate_from_image(path, size = 5)
         include Magick
         begin
