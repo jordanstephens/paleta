@@ -26,6 +26,7 @@ module Math
     dx.zip(dy, dz).each do |x, y, z|
       sxx += x ** 2
       syy += y ** 2
+      szz += z ** 2
       sxy += x * y
       szx += z * x
       syz += y * z
