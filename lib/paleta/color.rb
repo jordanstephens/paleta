@@ -212,6 +212,9 @@ module Paleta
       distance({ :r => @red, :g => @green, :b => @blue}, { :r => color.red, :g => color.green, :b => color.blue}) / sqrt(3 * (255 ** 2))
     end
     
+    # Return an array representation of a {Color} instance,
+    # @param [Symbol] model the color model, should be :rgb or :hsl
+    # @return [Array] an array of component values
     def to_array(model = :rgb)
       model = model.to_sym unless model.is_a? Symbol
       if model == :rgb
