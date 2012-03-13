@@ -215,11 +215,11 @@ module Paleta
     # Return an array representation of a {Color} instance,
     # @param [Symbol] model the color model, should be :rgb or :hsl
     # @return [Array] an array of component values
-    def to_array(model = :rgb)
-      model = model.to_sym unless model.is_a? Symbol
-      if model == :rgb
+    def to_array(color_model = :rgb)
+      color_model = color_model.to_sym unless color_model.is_a? Symbol
+      if color_model == :rgb
         array = [self.red, self.green, self.blue]
-      elsif model == :hsl
+      elsif color_model == :hsl
         array = [self.hue, self.saturation, self.lightness]
       else
         raise(ArgumentError, "Argument must be :rgb or :hsl")
