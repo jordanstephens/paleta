@@ -213,6 +213,12 @@ module Paleta
       end
     end
     
+    def to_array(model = :rgb)
+      model = model.to_sym unless model.is_a? Symbol
+      raise(ArgumentError, "Argument must be :rgb or :hsl") unless [:rgb, :hsl].include?(model)
+      colors.map { |c| c.to_array(model) }
+    end
+    
     private
     
     def self.generate_analogous_from_color(color, size)

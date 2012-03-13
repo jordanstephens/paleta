@@ -235,4 +235,15 @@ describe Paleta::Palette do
   it "should raise an error when generating a Palette from an invalid image" do
     expect{ Paleta::Palette.generate(:from => :image, :image => "/no/image.here") }.to raise_error(RuntimeError)
   end
+  
+  it "should return an array of colors, where each color is represented as an array of component values" do
+    c1 = Paleta::Color.new(13, 57, 182)
+    c2 = Paleta::Color.new(94, 161, 235)
+    palette = Paleta::Palette.new(c1, c2)
+    rgb_palette_array = [c1.to_array, c2.to_array]
+    hsl_palette_array = [c1.to_array(:hsl), c2.to_array(:hsl)]
+    palette.to_array.should == rgb_palette_array
+    palette.to_array(:rgb).should == rgb_palette_array
+    palette.to_array(:hsl).should == hsl_palette_array
+  end
 end

@@ -214,7 +214,6 @@ module Paleta
     
     def to_array(model = :rgb)
       model = model.to_sym unless model.is_a? Symbol
-      array = []
       if model == :rgb
         array = [self.red, self.green, self.blue]
       elsif model == :hsl
