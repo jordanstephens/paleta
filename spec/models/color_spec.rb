@@ -241,4 +241,13 @@ describe Paleta::Color do
     color.saturation.should == 0
     color.lightness.should == 100
   end
+  
+  it "should return an array of component values" do
+    c = Paleta::Color.new(30, 90, 120)
+    rgb_array = [c.red, c.green, c.blue]
+    hsl_array = [c.hue, c.saturation, c.lightness]
+    c.to_array.should == rgb_array
+    c.to_array(:rgb).should == rgb_array
+    c.to_array(:hsl).should == hsl_array
+  end
 end

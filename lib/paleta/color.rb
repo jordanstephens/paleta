@@ -212,6 +212,19 @@ module Paleta
       distance({ :r => @red, :g => @green, :b => @blue}, { :r => color.red, :g => color.green, :b => color.blue}) / sqrt(3 * (255 ** 2))
     end
     
+    def to_array(model = :rgb)
+      model = model.to_sym unless model.is_a? Symbol
+      array = []
+      if model == :rgb
+        array = [self.red, self.green, self.blue]
+      elsif model == :hsl
+        array = [self.hue, self.saturation, self.lightness]
+      else
+        raise(ArgumentError, "Argument must be :rgb or :hsl")
+      end
+      array
+    end
+    
     private
     
     def rgb_init(red = 0, green = 0, blue = 0)
