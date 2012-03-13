@@ -214,12 +214,18 @@ module Paleta
     end
     
     # Return an array representation of a {Palette} instance,
-    # @param [Symbol] model the color model, should be :rgb or :hsl
+    # @param [Symbol] model the color model, should be :rgb, :hsl, or :hex
     # @return [Array] an Array of Arrays where each sub-Array is a representation of a {Color} object in a {Palette} instance
     def to_array(model = :rgb)
       model = model.to_sym unless model.is_a? Symbol
-      raise(ArgumentError, "Argument must be :rgb or :hsl") unless [:rgb, :hsl].include?(model)
-      colors.map { |c| c.to_array(model) }
+      if [:rgb, :hsl].include?(model)
+        array = colors.map { |c| c.to_array(model) }
+      elsif
+        array = colors.map{ |c| c.hex }
+      else
+        raise(ArgumentError, "Argument must be :rgb or :hsl")
+      end
+      array
     end
     
     private

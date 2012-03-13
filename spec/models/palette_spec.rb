@@ -245,5 +245,6 @@ describe Paleta::Palette do
     palette.to_array.should == rgb_palette_array
     palette.to_array(:rgb).should == rgb_palette_array
     palette.to_array(:hsl).should == hsl_palette_array
+    palette.to_array(:hex).should == ['0D39B6', '5EA1EB']
   end
 end
