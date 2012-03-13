@@ -45,6 +45,12 @@ Individual component values can be accessed by name
 	color.lightness # => 64.50980392156862
 	color.hex # => "5EA1EB"
 	
+	
+Get an array representation of a Color
+
+	c = Paleta::Color.new(30, 90, 120)
+	c.to_array(:rgb) # => [30, 90, 120]
+	
 #### Manipulating Colors
 
 Colors can be lightened or darkened by a percentage
@@ -100,6 +106,14 @@ Colors can be accessed and removed by index.
 	palette[1] # => color2
 	
 	palette.delete_at(2)
+	
+Get an array representation of a Palette
+
+    c1 = Paleta::Color.new(13, 57, 182)
+    c2 = Paleta::Color.new(94, 161, 235)
+    palette = Paleta::Palette.new(c1, c2)
+	
+	palette.to_array(:rgb) # => [[13, 57, 182], [94, 161, 235]]
 
 #### Manipulating Palettes
 
