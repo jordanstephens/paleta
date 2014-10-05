@@ -1,12 +1,14 @@
 require 'paleta/core_ext/math'
+require 'bigdecimal'
+require 'bigdecimal/util'
 
 module Paleta
   # Represents a color
   class Color
     include Math
-    
+
     attr_reader :red, :green, :blue, :hue, :saturation, :lightness, :hex
-    
+
     # Initailize a {Color}
     #
     # @overload initialize()
@@ -36,7 +38,6 @@ module Paleta
     #
     # @return [Color] A new instance of {Color}
     def initialize(*args)
-      
       if args.length == 1 && args[0].is_a?(Color)
         args[0].instance_variables.each do |key|
           self.send("#{key[1..key.length]}=".to_sym, args[0].send("#{key[1..key.length]}"))
@@ -59,43 +60,43 @@ module Paleta
         raise(ArgumentError, "Invalid arguments")
       end
     end
-    
+
     def red=(val)
       @red = range_validator(val, 0..255)
       update_hsl
       update_hex
     end
-    
+
     def green=(val)
       @green = range_validator(val, 0..255)
       update_hsl
       update_hex
     end
-    
+
     def blue=(val)
       @blue = range_validator(val, 0..255)
       update_hsl
       update_hex
     end
-    
+
     def lightness=(val)
       @lightness = range_validator(val, 0..100)
       update_rgb
       update_hex
     end
-    
+
     def saturation=(val)
       @saturation = range_validator(val, 0..100)
       update_rgb
       update_hex
     end
-    
+
     def hue=(val)
       @hue = range_validator(val, 0..360)
       update_rgb
       update_hex
     end
-    
+
     def hex=(val)
       raise(ArgumentError, "Invalid Hex String") unless val.length == 6 && /^[[:xdigit:]]+$/ === val
       @hex = val.upcase
@@ -104,23 +105,23 @@ module Paleta
       @blue = val[4..5].hex
       update_hsl
     end
-    
+
     # Determine the equality of the receiver and another {Color}
     # @param [Color] color color to compare
     # @return [Boolean]
     def ==(color)
       color.is_a?(Color) ? (self.hex == color.hex) : false
     end
-    
+
     # Create a copy of the receiver and lighten it by a percentage
     # @param [Number] percentage percentage by which to lighten the {Color}
     # @return [Color] a lightened copy of the receiver
     def lighten(percentage = 5)
-      copy = self.class.new(self)
+      copy = self.dup
       copy.lighten!(percentage)
       copy
     end
-    
+
     # Lighten the receiver by a percentage
     # @param [Number] percentage percentage by which to lighten the {Color}
     # @return [Color] self
@@ -131,16 +132,16 @@ module Paleta
       update_hex
       self
     end
-    
+
     # Create a copy of the receiver and darken it by a percentage
     # @param [Number] percentage percentage by which to darken the {Color}
     # @return [Color] a darkened copy of the receiver
     def darken(percentage = 5)
-      copy = self.class.new(self)
+      copy = self.dup
       copy.darken!(percentage)
       copy
     end
-    
+
     # Darken the receiver by a percentage
     # @param [Number] percentage percentage by which to darken the {Color}
     # @return [Color] self
@@ -151,7 +152,7 @@ module Paleta
       update_hex
       self
     end
-    
+
     # Create a copy of the receiver and invert it
     # @return [Color] an inverted copy of the receiver
     def invert
@@ -159,7 +160,7 @@ module Paleta
       copy.invert!
       copy
     end
-    
+
     # Invert the receiver
     # @return [Color] self
     def invert!
@@ -170,7 +171,7 @@ module Paleta
       update_hex
       self
     end
-    
+
     # Create a copy of the receiver and desaturate it
     # @return [Color] a desaturated copy of the receiver
     def desaturate
@@ -182,12 +183,12 @@ module Paleta
     # Desaturate the receiver
     # @return [Color] self
     def desaturate!
-      @saturation = 0
+      self.saturation = 0
       update_rgb
       update_hex
       self
     end
-    
+
     # Create a new {Color} that is the complement of the receiver
     # @return [Color] a desaturated copy of the receiver
     def complement
@@ -195,7 +196,7 @@ module Paleta
       copy.complement!
       copy
     end
-    
+
     # Turn the receiver into it's complement
     # @return [Color] self
     def complement!
@@ -204,14 +205,14 @@ module Paleta
       update_hex
       self
     end
-    
+
     # Calculate the similarity between the receiver and another {Color}
     # @param [Color] color color to calculate the similarity to
     # @return [Number] a value in [0..1] with 0 being identical and 1 being as dissimilar as possible
     def similarity(color)
       distance({ :r => @red, :g => @green, :b => @blue}, { :r => color.red, :g => color.green, :b => color.blue}) / sqrt(3 * (255 ** 2))
     end
-    
+
     # Return an array representation of a {Color} instance,
     # @param [Symbol] model the color model, should be :rgb or :hsl
     # @return [Array] an array of component values
@@ -226,25 +227,25 @@ module Paleta
       end
       array
     end
-    
+
     private
-    
+
     def rgb_init(red = 0, green = 0, blue = 0)
       self.red = red
       self.green = green
       self.blue = blue
     end
-    
+
     def hsl_init(hue = 0, saturation = 0, lightness = 0)
       self.hue = hue
       self.saturation = saturation
       self.lightness = lightness
     end
-    
+
     def hex_init(val = "000000")
       self.hex = val
     end
-    
+
     def update_hsl
       r = @red / 255.0 rescue 0.0
       g = @green / 255.0 rescue 0.0
@@ -253,10 +254,14 @@ module Paleta
       min = [r, g, b].min
       max = [r, g, b].max
       delta = max - min
-      
+
       h = 0
       l = (max + min) / 2.0
-      s = ((l == 0 || l == 1) ? 0 : (delta / (1 - (2 * l - 1).abs)))
+      if ![1, 0].include?(l) && delta / 2.0  == l
+        s = 1.0
+      else
+        s = ((l == 0 || l == 1) ? 0 : (delta / (1 - (2 * l - 1).abs)))
+      end
 
       if delta != 0
         case max
@@ -265,15 +270,14 @@ module Paleta
         when b; h = ((r - g) / delta) + 4
         end
       end
-      
+
       @hue = h * 60
       @hue += 360 if @hue < 0
-      @saturation = s * 100
+      self.saturation = s * 100
       @lightness = l * 100
     end
-    
+
     def update_rgb
-            
       h = @hue / 60.0 rescue 0.0
       s = @saturation / 100.0 rescue 0.0
       l = @lightness / 100.0 rescue 0.0
@@ -281,7 +285,7 @@ module Paleta
       d1 = (1 - (2 * l - 1).abs) * s
       d2 = d1 * (1 - (h % 2 - 1).abs)
       d3 = l - (d1 / 2.0)
-      
+
       case h.to_i
       when 0; @red, @green, @blue = d1, d2, 0
       when 1; @red, @green, @blue = d2, d1, 0
@@ -291,12 +295,12 @@ module Paleta
       when 5; @red, @green, @blue = d1, 0, d2
       else; @red, @green, @blue = 0, 0, 0
       end
-      
+
       @red = 255 * (@red + d3)
       @green = 255 * (@green + d3)
       @blue = 255 * (@blue + d3)
     end
-    
+
     def update_hex
       r = @red.to_i.to_s(16) rescue "00"
       g = @green.to_i.to_s(16) rescue "00"
@@ -306,7 +310,7 @@ module Paleta
       b = "0#{b}" if b.length < 2
       @hex = "#{r}#{g}#{b}".upcase
     end
-    
+
     def range_validator(val, range)
       range.include?(val) ? val : raise(ArgumentError, "Component range exceeded")
     end
