@@ -181,7 +181,7 @@ module Paleta
     # Desaturate the receiver
     # @return [Color] self
     def desaturate!
-      self.saturation = 0
+      @saturation = 0
       update_rgb
       update_hex
       self
