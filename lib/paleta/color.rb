@@ -271,7 +271,7 @@ module Paleta
 
       @hue = h * 60
       @hue += 360 if @hue < 0
-      self.saturation = s * 100
+      @saturation = s * 100
       @lightness = l * 100
     end
 
