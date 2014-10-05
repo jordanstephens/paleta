@@ -1,6 +1,4 @@
 require 'paleta/core_ext/math'
-require 'bigdecimal'
-require 'bigdecimal/util'
 
 module Paleta
   # Represents a color
