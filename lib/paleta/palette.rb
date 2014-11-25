@@ -4,7 +4,7 @@ module Paleta
   
   module MagickDependent
     def self.included(klass)
-      require 'RMagick'
+      require 'RMagick' unless defined?(Magick)
       klass.extend(ClassMethods)
     rescue LoadError
       puts "You must install RMagick to use Palette.generate(:from => :image, ...)"
