@@ -297,13 +297,13 @@ module Paleta
       lightness = color.lightness
       d = :down
       until palette.size == size
-        lightness -= step if d == :down
-        lightness += step if d == :up
-        palette << Paleta::Color.new(:hsl, color.hue, color.saturation, lightness)
         if lightness - step < 0
           d = :up
           lightness = color.lightness
         end
+        lightness -= step if d == :down
+        lightness += step if d == :up
+        palette << Paleta::Color.new(:hsl, color.hue, color.saturation, lightness)
       end
       palette.sort! { |a, b| a.lightness <=> b.lightness }
     end
