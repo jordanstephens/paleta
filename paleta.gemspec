@@ -14,4 +14,8 @@ Gem::Specification.new do |gem|
   gem.name          = 'paleta'
   gem.require_paths = ['lib']
   gem.version       = Paleta::VERSION
+
+  gem.add_development_dependency "rspec", "~> 2.8"
+  gem.add_development_dependency "guard-rspec"
+  gem.add_development_dependency "pry-byebug"
 end
