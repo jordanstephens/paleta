@@ -42,7 +42,15 @@ module Paleta
         end
       elsif args.length == 2 && args[0] == :hex && args[1].is_a?(String)
         # example: new(:hex, "336699")
-        hex_init(args[1])
+        # example: new(:hex, "#336699")
+        # example: new(:hex, "#fff")
+        color_hex = args[1]
+        color_hex = color_hex[1..-1] if color_hex.start_with?('#')
+
+        # These are all string operations to make a "fea" into a "ffeeaa"
+        color_hex = color_hex[0] * 2 + color_hex[1] * 2 + color_hex[2] * 2 if color_hex.length == 3
+
+        hex_init(color_hex)
       elsif args.length == 3 && args[0].is_a?(Numeric) && args[1].is_a?(Numeric) && args[2].is_a?(Numeric)
         # example: new(235, 129, 74)
         rgb_init(args[0], args[1], args[2])
