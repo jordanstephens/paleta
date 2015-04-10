@@ -174,49 +174,49 @@ Palettes can be generated from a "seed" Color or from an image by using the `gen
 
 ```ruby
 color = Paleta::Color.new(:hex, "ff0000")
-palette = Paleta::Palette.generate(:type => :shades, :from => :color, :size => 5)
+palette = Paleta::Palette.generate(:type => :shades, :from => :color, :size => 5, :color => color)
 ```
 
 **Generate a Palette of analogous Colors from a Color**
 
 ```ruby
 color = Paleta::Color.new(:hex, "0066cc")
-palette = Paleta::Palette.generate(:type => :analogous, :from => :color, :size => 5)
+palette = Paleta::Palette.generate(:type => :analogous, :from => :color, :size => 5, :color => color)
 ```
 
 **Generate a Palette of monochromatic Colors from a Color**
 
 ```ruby
 color = Paleta::Color.new(:hex, "336699")
-palette = Paleta::Palette.generate(:type => :monochromatic, :from => :color, :size => 5)
+palette = Paleta::Palette.generate(:type => :monochromatic, :from => :color, :size => 5, :color => color)
 ```
 
 **Generate a Palette of complementary Colors from a Color**
 
 ```ruby
 color = Paleta::Color.new(:hex, "0000ff")
-palette = Paleta::Palette.generate(:type => :complementary, :from => :color, :size => 5)
+palette = Paleta::Palette.generate(:type => :complementary, :from => :color, :size => 5, :color => color)
 ```
 
 **Generate a Palette of split-complement Colors from a Color**
 
 ```ruby
 color = Paleta::Color.new(:hex, "006699")
-palette = Paleta::Palette.generate(:type => :split_complement, :from => :color, :size => 5)
+palette = Paleta::Palette.generate(:type => :split_complement, :from => :color, :size => 5, :color => color)
 ```
 
 **Generate a Palette of triad Colors from a Color**
 
 ```ruby
 color = Paleta::Color.new(:hex, "006699")
-palette = Paleta::Palette.generate(:type => :triad, :from => :color, :size => 5)
+palette = Paleta::Palette.generate(:type => :triad, :from => :color, :size => 5, :color => color)
 ```
 
 **Generate a Palette of tetrad Colors from a Color**
 
 ```ruby
 color = Paleta::Color.new(:hex, "dd5533")
-palette = Paleta::Palette.generate(:type => :tetrad, :from => :color, :size => 5)
+palette = Paleta::Palette.generate(:type => :tetrad, :from => :color, :size => 5, :color => color)
 ```
 
 **Generate a random Palette**
@@ -237,4 +237,3 @@ palette = Paleta::Palette.generate(:from => :image, :image => "/path/to/image.jp
 
 See the [documentation](http://rubydoc.info/gems/paleta/ "Documentation").
 
- 
