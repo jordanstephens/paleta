@@ -277,10 +277,10 @@ module Paleta
         end
       end
 
-      @hue = h * 60
+      @hue = (h * 60.0).round(8)
       @hue += 360 if @hue < 0
-      @saturation = s * 100
-      @lightness = l * 100
+      @saturation = (s * 100.0).round(8)
+      @lightness = (l * 100.0).round(8)
     end
 
     def update_rgb
