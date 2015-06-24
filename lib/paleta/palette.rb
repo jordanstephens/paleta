@@ -227,6 +227,14 @@ module Paleta
       array
     end
 
+    def fit
+      # create a 3xn matrix where n = @colors.size to represent the set of colors
+      reds = @colors.map { |c| c.red }
+      greens = @colors.map { |c| c.green }
+      blues = @colors.map { |c| c.blue }
+      multiple_regression(reds, greens, blues)
+    end
+
     private
 
     def self.generate_analogous_from_color(color, size)
@@ -344,14 +352,6 @@ module Paleta
         i += 1; j += 1; i %= hues.size; j %= (2 * hues.size)
       end
       palette.sort! { |a, b| a.saturation <=> b.saturation }
-    end
-
-    def fit
-      # create a 3xn matrix where n = @colors.size to represent the set of colors
-      reds = @colors.map { |c| c.red }
-      greens = @colors.map { |c| c.green }
-      blues = @colors.map { |c| c.blue }
-      multiple_regression(reds, greens, blues)
     end
   end
 end

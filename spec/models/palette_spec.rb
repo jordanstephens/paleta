@@ -93,7 +93,6 @@ describe Paleta::Palette do
   end
 
   it "should calculate a multiple regression over each Color in the Palette in RGB space" do
-    Paleta::Palette.send(:public, :fit)
     c1 = Paleta::Color.new(13, 57, 182)
     c2 = Paleta::Color.new(94, 161, 235)
     c3 = Paleta::Color.new(237, 172, 33)
