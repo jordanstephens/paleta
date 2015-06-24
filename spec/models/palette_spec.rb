@@ -20,7 +20,7 @@ describe Paleta::Palette do
     c3 = Paleta::Color.new(0, 0, 0)
     palette = Paleta::Palette.new(c1)
     palette << c2 << c3
-    palette.include?(c2).should be_true
+    palette.include?(c2).should be true
   end
 
   it "should add Colors with push" do
@@ -37,7 +37,7 @@ describe Paleta::Palette do
     palette = Paleta::Palette.new(c1, c2)
     c = palette.pop()
     c.should == c2
-    palette.include?(c2).should be_false
+    palette.include?(c2).should be false
   end
 
   it "should remove Colors by index" do
@@ -45,7 +45,7 @@ describe Paleta::Palette do
     c2 = Paleta::Color.new(94, 161, 235)
     palette = Paleta::Palette.new(c1, c2)
     palette.delete_at(0)
-    palette.include?(c1).should be_false
+    palette.include?(c1).should be false
   end
 
   it "should allow array-style accessing of Colors" do
@@ -190,7 +190,7 @@ describe Paleta::Palette do
     palette.size.should == 5
     palette.each do |c|
       c.lightness.should == color.lightness
-      [color.hue, color.complement.hue].include?(c.hue).should be_true
+      [color.hue, color.complement.hue].include?(c.hue).should be true
     end
   end
 
@@ -200,7 +200,7 @@ describe Paleta::Palette do
     palette.size.should == 5
     palette.each do |c|
       c.lightness.should == color.lightness
-      [color.hue, (color.hue + 120) % 360, (color.hue + 240) % 360].include?(c.hue).should be_true
+      [color.hue, (color.hue + 120) % 360, (color.hue + 240) % 360].include?(c.hue).should be true
     end
   end
 
@@ -210,7 +210,7 @@ describe Paleta::Palette do
     palette.size.should == 5
     palette.each do |c|
       c.lightness.should == color.lightness
-      [color.hue, (color.hue + 90) % 360, (color.hue + 180) % 360, (color.hue + 270) % 360].include?(c.hue).should be_true
+      [color.hue, (color.hue + 90) % 360, (color.hue + 180) % 360, (color.hue + 270) % 360].include?(c.hue).should be true
     end
   end
 
@@ -220,7 +220,7 @@ describe Paleta::Palette do
     palette.size.should == 5
     palette.each do |c|
       c.lightness.should == color.lightness
-      [color.hue, (color.hue + 150) % 360, (color.hue + 210) % 360].include?(c.hue).should be_true
+      [color.hue, (color.hue + 150) % 360, (color.hue + 210) % 360].include?(c.hue).should be true
     end
   end
 

@@ -81,11 +81,11 @@ describe Paleta::Color do
   it "should determine its equality to another Color" do
     color1 = Paleta::Color.new(237, 172, 33)
     color2 = Paleta::Color.new(:hex, "EDAC21")
-    (color1 == color2).should be_true
+    (color1 == color2).should be true
     color3 = Paleta::Color.new(:hsl, 200, 50, 100)
-    (color1 == color3).should be_false
+    (color1 == color3).should be false
     obj = Object.new
-    (color1 == obj).should be_false
+    (color1 == obj).should be false
   end
 
   it "should calculate its HSL value on itialization" do
