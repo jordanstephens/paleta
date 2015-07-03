@@ -1,5 +1,10 @@
 # Paleta
 
+[![Build Status](https://travis-ci.org/jordanstephens/paleta.svg?branch=master)](https://travis-ci.org/jordanstephens/paleta)
+[![Code Climate](https://codeclimate.com/github/jordanstephens/paleta/badges/gpa.svg)](https://codeclimate.com/github/jordanstephens/paleta)
+[![Dependency Status](https://gemnasium.com/jordanstephens/paleta.svg)](https://gemnasium.com/jordanstephens/paleta)
+
+
 A gem for working with color palettes
 
 ## Installation
