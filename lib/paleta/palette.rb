@@ -211,7 +211,7 @@ module Paleta
 
     def self.generate_from_image(path, size = 5)
       unless Paleta.rmagick_available?
-        return puts "You must install RMagick to use Palette.generate(:from => :image, ...)"
+        raise Paleta::MissingDependencyError, "You must install RMagick to use Palette.generate(:from => :image, ...)"
       end
 
       begin
