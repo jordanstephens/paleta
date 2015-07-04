@@ -224,26 +224,28 @@ describe Paleta::Palette do
     end
   end
 
-  it "should generate a Palette from an image" do
-    path = File.join(File.dirname(__FILE__), '..', 'images/test.jpg')
-    size = 5
-    palette = Paleta::Palette.generate(:from => :image, :image => path, :size => size)
-    palette.size.should == size
-  end
+  unless defined?(JRUBY_VERSION)
+    it "should generate a Palette from an image" do
+      path = File.join(File.dirname(__FILE__), '..', 'images/test.jpg')
+      size = 5
+      palette = Paleta::Palette.generate(:from => :image, :image => path, :size => size)
+      palette.size.should == size
+    end
 
-  it "should raise when generating a Palette from an image without RMagick" do
-    # stub Paleta.rmagick_available? to return false
-    allow(Paleta).to receive(:rmagick_available?).and_return(false)
+    it "should raise when generating a Palette from an image without RMagick" do
+      # stub Paleta.rmagick_available? to return false
+      allow(Paleta).to receive(:rmagick_available?).and_return(false)
 
-    path = File.join(File.dirname(__FILE__), '..', 'images/test.jpg')
-    size = 5
-    expect do
-      Paleta::Palette.generate(:from => :image, :image => path, :size => size)
-    end.to raise_error(Paleta::MissingDependencyError)
-  end
+      path = File.join(File.dirname(__FILE__), '..', 'images/test.jpg')
+      size = 5
+      expect do
+        Paleta::Palette.generate(:from => :image, :image => path, :size => size)
+      end.to raise_error(Paleta::MissingDependencyError)
+    end
 
-  it "should raise an error when generating a Palette from an invalid image" do
-    expect{ Paleta::Palette.generate(:from => :image, :image => "/no/image.here") }.to raise_error(RuntimeError)
+    it "should raise an error when generating a Palette from an invalid image" do
+      expect{ Paleta::Palette.generate(:from => :image, :image => "/no/image.here") }.to raise_error(RuntimeError)
+    end
   end
 
   it "should return an array of colors, where each color is represented as an array of component values" do
