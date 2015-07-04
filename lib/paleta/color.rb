@@ -302,9 +302,9 @@ module Paleta
       else; @red, @green, @blue = 0, 0, 0
       end
 
-      @red = 255 * (@red + d3)
-      @green = 255 * (@green + d3)
-      @blue = 255 * (@blue + d3)
+      @red = (255 * (@red + d3)).to_i
+      @green = (255 * (@green + d3)).to_i
+      @blue = (255 * (@blue + d3)).to_i
     end
 
     def update_hex
