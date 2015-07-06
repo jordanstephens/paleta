@@ -1,38 +1,10 @@
 require 'paleta/core_ext/math'
 
 module Paleta
-  module MagickDependent
-    def self.included(klass)
-      require 'RMagick' unless defined?(Magick)
-      klass.extend(ClassMethods)
-    rescue LoadError
-      puts "You must install RMagick to use Palette.generate(:from => :image, ...)"
-    end
-
-    module ClassMethods
-      def generate_from_image(path, size = 5)
-        include Magick
-        begin
-          image = Magick::ImageList.new(path)
-
-          # quantize image to the nearest power of 2 greater the desired palette size
-          quantized_image = image.quantize((Math.sqrt(size).ceil ** 2), Magick::RGBColorspace)
-          colors = quantized_image.color_histogram.sort { |a, b| b[1] <=> a[1] }[0..(size - 1)].map do |color|
-            Paleta::Color.new(color[0].red / 256, color[0].green / 256, color[0].blue / 256)
-          end
-          return Paleta::Palette.new(colors)
-        rescue Magick::ImageMagickError
-          raise "Invalid image at " << path
-        end
-      end
-    end
-  end
-
   # Represents a palette, a collection of {Color}s
   class Palette
     include Math
     include Enumerable
-    include MagickDependent
 
     attr_accessor :colors
 
@@ -236,6 +208,25 @@ module Paleta
     end
 
     private
+
+    def self.generate_from_image(path, size = 5)
+      unless Paleta.rmagick_available?
+        raise Paleta::MissingDependencyError, "You must install RMagick to use Palette.generate(:from => :image, ...)"
+      end
+
+      begin
+        image = Magick::ImageList.new(path)
+
+        # quantize image to the nearest power of 2 greater the desired palette size
+        quantized_image = image.quantize((Math.sqrt(size).ceil ** 2), Magick::RGBColorspace)
+        colors = quantized_image.color_histogram.sort { |a, b| b[1] <=> a[1] }[0..(size - 1)].map do |color|
+          Paleta::Color.new(color[0].red / 256, color[0].green / 256, color[0].blue / 256)
+        end
+        return Paleta::Palette.new(colors)
+      rescue Magick::ImageMagickError
+        raise "Invalid image at " << path
+      end
+    end
 
     def self.generate_analogous_from_color(color, size)
       raise(ArgumentError, "Passed argument is not a Color") unless color.is_a?(Color)

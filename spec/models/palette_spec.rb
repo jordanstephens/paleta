@@ -231,6 +231,17 @@ describe Paleta::Palette do
     palette.size.should == size
   end
 
+  it "should raise when generating a Palette from an image without RMagick" do
+    # stub Paleta.rmagick_available? to return false
+    allow(Paleta).to receive(:rmagick_available?).and_return(false)
+
+    path = File.join(File.dirname(__FILE__), '..', 'images/test.jpg')
+    size = 5
+    expect do
+      Paleta::Palette.generate(:from => :image, :image => path, :size => size)
+    end.to raise_error(Paleta::MissingDependencyError)
+  end
+
   it "should raise an error when generating a Palette from an invalid image" do
     expect{ Paleta::Palette.generate(:from => :image, :image => "/no/image.here") }.to raise_error(RuntimeError)
   end
