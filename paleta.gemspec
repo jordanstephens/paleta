@@ -17,5 +17,5 @@ Gem::Specification.new do |gem|
 
   gem.add_development_dependency "rspec", "~> 2.8"
   gem.add_development_dependency "guard-rspec", "~> 1.2"
-  gem.add_development_dependency "pry-byebug", "~> 2.0"
+  gem.add_development_dependency("pry-byebug", "~> 2.0") unless defined?(JRUBY_VERSION)
 end

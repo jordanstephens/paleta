@@ -2,4 +2,6 @@ source 'https://rubygems.org'
 
 gemspec
 
-gem 'rmagick'
+platforms :ruby do
+  gem 'rmagick'
+end
