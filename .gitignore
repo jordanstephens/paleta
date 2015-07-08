@@ -8,3 +8,4 @@ tmp
 .yardoc
 _yardoc
 doc/
+.ruby-version
